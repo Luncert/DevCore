@@ -196,7 +196,7 @@ export default function LogStreamingView({
     }
     // this.setState({loggingParams: {logSourceId: '3bd40027-0e59-4366-9980-8a395c62c2d2#0', serviceName: 'test'}})
 
-    processLog('{"type":0, "payload": "asdasdasd"}', output => this.term.write(output), false)
+    processLog('{"type":0, "payload": "asdasdasd"}', output => term.write(output), false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
