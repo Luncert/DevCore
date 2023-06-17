@@ -1,0 +1,31 @@
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 50px;
+  height: 100%;
+  background-color: rgb(56, 56, 56);
+  z-index: 1000;
+
+  .item {
+    position: relative;
+    box-sizing: border-box;
+    color: rgb(95, 95, 95);
+    margin: 3px 3px 3px 0px;
+    width: 47px;
+    height: 44px;
+    padding: 7px 7px 7px 10px;
+    border-radius: 0px 10px 10px 0px;
+  }
+
+  .item i {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+    line-height: 30px;
+  }
+
+  .alignToBottom {
+    margin-top: auto;
+  }
+}

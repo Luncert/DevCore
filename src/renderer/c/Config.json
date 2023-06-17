@@ -1,0 +1,8 @@
+{
+    "loghub": {
+        "endpoint": "https://loghub-stream.cfapps.eu10.hana.ondemand.com"
+    },
+    "garlinc": {
+        "endpoint": "http://localhost:8080"
+    }
+}

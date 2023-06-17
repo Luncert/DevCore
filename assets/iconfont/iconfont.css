@@ -1,0 +1,75 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2617118 */
+  src: url('iconfont.woff2?t=1650352339231') format('woff2'),
+       url('iconfont.woff?t=1650352339231') format('woff'),
+       url('iconfont.ttf?t=1650352339231') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.iconCloud:before {
+  content: "\e62a";
+}
+
+.iconCopy:before {
+  content: "\e706";
+}
+
+.iconGithub:before {
+  content: "\e885";
+}
+
+.iconConsole:before {
+  content: "\e6ad";
+}
+
+.iconClear:before {
+  content: "\e615";
+}
+
+.iconHide:before {
+  content: "\e84b";
+}
+
+.iconNewWindow:before {
+  content: "\e62e";
+}
+
+.iconSetting:before {
+  content: "\e676";
+}
+
+.iconProfile:before {
+  content: "\e61a";
+}
+
+.iconClose:before {
+  content: "\e668";
+}
+
+.iconDown:before {
+  content: "\e66b";
+}
+
+.iconUp:before {
+  content: "\e66c";
+}
+
+.iconDisconnect:before {
+  content: "\e605";
+}
+
+.iconRefresh:before {
+  content: "\e6ba";
+}
+
+.iconRocket:before {
+  content: "\e601";
+}
+

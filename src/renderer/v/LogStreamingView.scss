@@ -1,0 +1,276 @@
+@font-face {
+  font-family: "JetBrainsMono-Regular";
+  src: url('../../../assets/font/JetBrainsMono-Regular.ttf');
+}
+
+#loggingPage {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 0px 3px black;
+
+  .instanceList {
+    width: 20%;
+    height: 100%;
+    background-color: rgb(51, 58, 75);
+
+    .instanceListHeader {
+      position: relative;
+      width: 100%;
+      height: 30px;
+      font-weight: bold;
+      text-align: center;
+
+      .title {
+        color: rgb(204, 204, 204);
+        line-height: 30px;
+      }
+
+      .hideBtn {
+        position: absolute;
+        top: 3px;
+        right: 30px;
+        color: rgb(245, 155, 53);
+        background-color: rgb(51, 58, 75);
+        z-index: 100;
+      }
+
+      .refreshBtn {
+        position: absolute;
+        top: 3px;
+        right: 5px;
+        color: rgb(245, 155, 53);
+        background-color: rgb(51, 58, 75);
+        z-index: 100;
+      }
+
+      .hideBtn:hover,
+      .refreshBtn:hover {
+        background-color: rgb(76, 89, 116);
+      }
+
+      .hideBtn:active,
+      .refreshBtn:active {
+        background-color: rgb(101, 115, 146);
+      }
+    }
+  }
+
+  .linkedData {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    width: 60%;
+    height: 80%;
+
+    color: white;
+    border-radius: 5px;
+    box-shadow: -5px 0px 5px -5px rgba(0, 0, 0, 0.5), 5px 0px 5px -5px rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    overflow: hidden;
+
+    .linkedDataWrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      background-color: rgb(51, 58, 75);
+
+      .header {
+        width: 100%;
+        height: 30px;
+        padding: 3px;
+
+        .title {
+          display: inline-block;
+          font-weight: bold;
+          margin-left: 4px;
+        }
+
+        .closeBtn {
+          float: right;
+          color: rgb(245, 155, 53);
+          background-color: rgb(64, 76, 109);
+          z-index: 100;
+        }
+
+        .closeBtn:hover {
+          background-color: rgb(76, 89, 116);
+        }
+
+        .closeBtn:active {
+          background-color: rgb(101, 115, 146);
+        }
+      }
+
+      .innerWrapper {
+        position: relative;
+        width: 100%;
+        flex-grow: 1;
+      }
+    }
+  }
+
+  .loggingArea {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    .optionBar {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 30px;
+      color: rgb(204, 204, 204);
+      background-color: rgb(58, 67, 87);
+
+      .label,
+      .value {
+        display: inline-block;
+        line-height: 20px;
+        text-align: center;
+        height: 20px;
+        padding: 0px 4px;
+        margin-top: 5px;
+        margin-left: 10px;
+        user-select: none;
+      }
+
+      .label {
+        border-radius: 3px 0px 0px 3px;
+        background-color: rgb(89, 105, 173);
+      }
+
+      .label:nth-last-of-type(1) {
+        border-radius: 3px;
+      }
+
+      .dropdown button {
+        border: none;
+        color: rgb(204, 204, 204);
+        background-color: rgb(58, 67, 87);
+      }
+
+      button {
+        margin: 0px 5px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        line-height: 30px;
+      }
+
+      .submitBtn,
+      .clearBtn {
+        margin-top: 3px;
+        color: rgb(245, 155, 53);
+        background-color: rgb(58, 67, 87);
+      }
+
+      .disconnectBtn {
+        margin-top: 3px;
+        color: rgb(255, 0, 0);
+        background-color: rgb(58, 67, 87);
+      }
+
+      .submitBtn:hover,
+      .clearBtn:hover,
+      .disconnectBtn:hover {
+        background-color: rgb(76, 89, 116);
+      }
+
+      .submitBtn:active,
+      .clearBtn:hover,
+      .disconnectBtn:active {
+        background-color: rgb(101, 115, 146);
+      }
+    }
+
+    .xtermContainer {
+      width: 100%;
+      height: calc(100% - 30px);
+      background-color: rgb(17, 21, 29);
+    }
+
+    .notification {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 100px;
+      z-index: 0;
+    }
+  }
+}
+
+#searchBar {
+  position: absolute;
+  right: 0px;
+  top: 30px;
+  z-index: 1000;
+
+  .searchBarInner {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    border-radius: 0px 0px 3px 3px;
+    overflow: hidden;
+    background-color: rgb(58, 67, 87);
+
+    input {
+      box-sizing: border-box;
+      border-radius: 3px;
+      margin-right: 2px;
+      height: 24px;
+      width: 150px;
+      padding: 0px 5px;
+      border: 1px solid rgb(71, 83, 109);
+    }
+
+    input:hover {
+      border: 1px solid rgb(88, 103, 136);
+    }
+
+    input:focus {
+      border: 1px solid rgb(88, 103, 136);
+    }
+
+    button {
+      height: 24px;
+      width: 24px;
+      color: rgb(204, 204, 204);
+      background-color: rgb(58, 67, 87);
+    }
+
+    button::before {
+      line-height: 24px;
+      vertical-align: top;
+    }
+
+    button:hover {
+      color: white;
+      background-color: rgb(76, 89, 116);
+    }
+
+    button:active {
+      background-color: rgb(101, 115, 146);
+    }
+
+    .activeBtn {
+      color: white;
+      background-color: rgb(101, 115, 146);
+    }
+  }
+}
+
+.xterm-viewport::-webkit-scrollbar {
+  background-color: rgb(17, 21, 29);
+  width: 5px;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb {
+  background-color: rgb(89, 101, 134);
+}

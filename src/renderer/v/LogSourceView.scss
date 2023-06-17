@@ -1,0 +1,418 @@
+
+#LogSourceView {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: white;
+
+  .viewHeader {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    // reserve 130px of app nav bar
+    width: calc(100% - 130px);
+    height: 30px;
+  }
+
+  .orgTabs {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+
+    .org {
+      position: relative;
+      background-color: rgb(58, 67, 87);
+      color: rgb(204, 204, 204);
+
+      top: 1px;
+      height: 29px;
+      line-height: 29px;
+      border-radius: 8px 8px 0px 0px;
+      cursor: pointer;
+      user-select: none;
+
+      .tabLeftRadius,
+      .tabRightRadius {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        bottom: 0px;
+      }
+
+      .tabLeftRadius {
+        left: -8px;
+      }
+
+      .tabRightRadius {
+        right: -8px;
+      }
+
+      .tabInner {
+        box-sizing: border-box;
+        height: 30px;
+        padding: 0px 10px;
+      }
+    }
+
+    .org.selected {
+      background-color: rgb(17, 21, 29);
+      background-color: rgb(89, 105, 173);
+
+      z-index: 1;
+    }
+  }
+
+  .optionBar {
+
+    padding: 3px 10px;
+
+    .refreshBtn {
+      background-color: rgb(58, 67, 87);
+    }
+
+    .refreshBtn:hover {
+      background-color: rgb(89, 101, 134);
+    }
+
+    .refreshBtn:active {
+      background-color: rgb(101, 115, 146);
+    }
+  }
+
+  .content {
+    display: flex;
+    width: 100%;
+    height: calc(100% - 30px);
+    flex-direction: row;
+    background-color: rgb(17, 21, 29);
+
+    .spaceContainer {
+      box-sizing: border-box;
+      width: 70%;
+      padding: 16px 20px;
+      overflow-y: auto;
+
+      .space {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        background-color: rgb(69, 79, 104);
+        margin: 1em 0px;
+        box-shadow: -5px 0px 5px -5px rgba(0, 0, 0, 0.5), 5px 0px 5px -5px rgba(0, 0, 0, 0.5);
+
+        .spaceName {
+          text-align: justify;
+          margin: 1em 1em;
+        }
+
+        .serviceContainerWrapper {
+          display: flex;
+          flex-direction: row;
+          padding: 1em;
+
+          .serviceContainer:nth-of-type(1) {
+            border-right: 1px solid rgb(95, 120, 141);
+          }
+
+          .serviceContainer {
+            box-sizing: border-box;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+
+            .service {
+              border-radius: 5px;
+              padding: 2px 5px;
+              cursor: pointer;
+            }
+
+            .service:hover {
+              background-color: rgb(89, 101, 134);
+              box-shadow: -5px 0px 5px -5px rgba(0, 0, 0, 0.5), 5px 0px 5px -5px rgba(0, 0, 0, 0.5);
+            }
+          }
+        }
+
+      }
+    }
+
+    .spaceContainer::-webkit-scrollbar {
+      background-color: rgb(2, 18, 31);
+      width: 5px;
+    }
+
+    .spaceContainer::-webkit-scrollbar-thumb {
+      background-color: rgb(89, 101, 134);
+    }
+
+    .serviceDetails {
+      width: 30%;
+      box-sizing: border-box;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+
+      .noContent {
+        position: relative;
+        top: 50%;
+        margin-top: -1em;
+        text-align: center;
+      }
+
+      .noContent::before {
+        content: 'Service Details';
+        font-size: 2em;
+        font-style: italic;
+        font-family: 'Courier New';
+        color: rgb(129, 129, 129);
+      }
+
+      .ringLoader {
+        position: relative;
+        top: 50%;
+        margin-top: -40px;
+        text-align: center;
+      }
+
+      .ringLoaderInner {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+      }
+
+      .ringLoaderInner::after {
+        content: ' ';
+        display: block;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 6px solid rgb(178, 240, 72);
+        border-color: rgb(178, 240, 72) transparent rgb(178, 240, 72) transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+      }
+
+      @keyframes lds-dual-ring {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .header {
+        position: relative;
+
+        .serviceName {
+          font-weight: bold;
+          font-size: 1.2em;
+        }
+
+        .copyBtn {
+          margin-left: 0.5em;
+          background-color: rgb(17, 21, 29);
+        }
+
+        .copyBtn:hover {
+          background-color: rgb(89, 101, 134);
+        }
+
+        .copyBtn:active {
+          background-color: rgb(101, 115, 146);
+        }
+
+        .label {
+          display: inline-block;
+          background-color: rgb(16, 80, 130);
+          border-radius: 10px;
+          box-sizing: border-box;
+          padding: 0px 5px;
+          margin: 2px;
+          height: 20px;
+          line-height: 20px;
+          color: rgb(17, 21, 29);
+          box-shadow: -5px 0px 5px -5px rgba(0, 0, 0, 0.5), 5px 0px 5px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .dwcManaged {
+          background-color: rgb(165, 163, 46);
+        }
+
+        .cfManaged {
+          background-color: rgb(46, 102, 165);
+        }
+
+        .serviceOptionBar {
+          display: flex;
+          flex-direction: row;
+
+          .refreshBtn,
+          .githubBtn {
+            background-color: rgb(17, 21, 29);
+          }
+
+          .refreshBtn:hover,
+          .githubBtn:hover {
+            background-color: rgb(89, 101, 134);
+          }
+
+          .refreshBtn:active,
+          .githubBtn:active {
+            background-color: rgb(101, 115, 146);
+          }
+        }
+
+      }
+
+      .header::after {
+        display: block;
+        content: '';
+        width: 100%;
+        height: 1px;
+        margin: 5px 0px;
+        background-color: rgb(95, 120, 141);
+      }
+
+      .applications {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        box-sizing: border-box;
+        padding: 5px 0px;
+
+        .application:nth-of-type(1) {
+          margin-top: 0px;
+        }
+
+        .application {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          border-radius: 10px;
+          background-color: rgb(69, 79, 104);
+          margin: 5px 0px;
+          padding: 2px 5px;
+          box-shadow: -5px 0px 5px -5px rgba(0, 0, 0, 0.5), 5px 0px 5px -5px rgba(0, 0, 0, 0.5);
+
+          .field {
+            display: inline-block;
+            margin: 2px 5px;
+          }
+
+          .field::before {
+              display: inline-block;
+              color: rgb(204, 204, 204);
+              margin-right: 10px;
+          }
+
+          .field span {
+            display: inline-block;
+            margin-right: 0.5em;
+          }
+
+          .applicationName::before {
+            content: 'application name:';
+          }
+
+          .cfCockpitLink::before {
+            content: 'cloud foundry cockipt link:';
+          }
+
+          .applicationId::before {
+            content: 'application id:';
+          }
+
+          .deploymentId::before {
+            content: 'deployment id:';
+          }
+
+          .applicationCreatedAt::before {
+            content: 'application created at:';
+          }
+
+          .artifactCreatedAt::before {
+            content: 'artifact created at:';
+          }
+
+          .copyBtn,
+          .cloudBtn {
+            background-color: rgb(69, 79, 104);
+          }
+
+          .copyBtn:hover,
+          .cloudBtn:hover {
+            background-color: rgb(89, 101, 134);
+          }
+
+          .copyBtn:active,
+          .cloudBtn:active {
+            background-color: rgb(101, 115, 146);
+          }
+
+          .instances {
+            padding: 2px 0px;
+
+            .instance {
+              padding: 2px 5px;
+              border-radius: 6px;
+              position: relative;
+              user-select: none;
+
+              .instanceId::before {
+                content: 'instance id:';
+              }
+
+              .consoleBtn {
+                margin-left: 0.5em;
+                background-color: rgb(69, 79, 104);
+              }
+
+              .consoleBtn:hover {
+                background-color: rgb(89, 101, 134);
+              }
+
+              .consoleBtn:active {
+                background-color: rgb(101, 115, 146);
+              }
+            }
+
+            .instance::before {
+              display: inline-block;
+              content: '';
+              width: 10px;
+              height: 10px;
+              margin-right: 0.5em;
+              background-color: aquamarine;
+            }
+
+            // .instance:hover {
+            //   cursor: pointer;
+            //   background-color: rgb(89, 101, 134);
+            // }
+          }
+        }
+
+        .application.latest::before {
+          content: 'Latest';
+          position: absolute;
+          top: 10px;
+          right: -16px;
+          padding: 2px 0px;
+          width: 16px;
+          line-height: 16px;
+          writing-mode: tb-rl;
+          color: rgb(69, 79, 104);
+          background-color: rgb(178, 240, 72);
+          border-radius: 0px 5px 5px 0px;
+          box-shadow: 5px 0px 3px -3px rgba(0, 0, 0, 0.5) inset;
+        }
+      }
+    }
+  }
+
+}
