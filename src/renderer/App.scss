@@ -94,8 +94,13 @@ a:hover {
   linear-gradient(90deg, rgb(43, 69, 118), rgb(77, 172, 201) 60%, rgb(196, 243, 244));
 }
 
-.content {
+.content, .panel {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+.hiddenPanel {
+  position: absolute;
+  z-index: -1;
 }

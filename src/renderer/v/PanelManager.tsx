@@ -8,12 +8,18 @@ import React, {
   useState,
 } from 'react';
 import SidebarItem from './SidebarItem';
-import { names } from 'renderer/c/utils';
+import { conditionalString, names } from 'renderer/c/utils';
 
 interface PanelAttributes {
   iconName: string;
   element: JSX.Element;
   tips?: string;
+  keepAliveInBackground?: boolean;
+}
+
+interface CreatePanelAttributes extends PanelAttributes {
+  panelId: string;
+  focus?: boolean;
 }
 
 export enum PanelStatus {
@@ -81,9 +87,10 @@ interface PanelProps {
   name: string;
   element: JSX.Element;
   isDefault?: boolean;
+  keepAliveInBackground?: boolean;
 }
 
-export function Panel({ name, element, isDefault }: PanelProps) {
+export function Panel({ name, element, isDefault, keepAliveInBackground }: PanelProps) {
   const { currentPanel, setCurrentPanel } = useContext(PanelManagerContext);
 
   useEffect(() => {
@@ -92,11 +99,8 @@ export function Panel({ name, element, isDefault }: PanelProps) {
     }
   }, [currentPanel, isDefault]);
 
-  if (currentPanel === name) {
-    return element;
-  }
-
-  return React.createElement('div', { style: { visibility: false } });
+  const hidden = currentPanel !== name;
+  return React.createElement('div', { className: names('panel', conditionalString(hidden, 'hiddenPanel')) }, element);
 }
 
 export class PanelManagerAction {
@@ -107,7 +111,7 @@ export class PanelManagerAction {
     private setCurrentPanelCallback: (_: SetStateAction<string>) => void,
     private setSignature: (_: SetStateAction<string>) => void
   ) {
-    console.log(currentPanel);
+    // console.log(currentPanel);
   }
 
   setCurrentPanel(panelId: string) {
@@ -126,14 +130,18 @@ export class PanelManagerAction {
     }
   }
 
-  createPanel(panelId: string, panelAttrs: PanelAttributes, focus?: boolean) {
-    this.container.set(panelId, {
-      panelAttrs,
-      status: PanelStatus.Inactive,
-      sidebarItemRef: null,
-    });
-    if (focus) {
-      this.setCurrentPanelCallback(panelId);
+  createPanel(panelAttrs: CreatePanelAttributes) {
+    if (this.container.has(panelAttrs.panelId)) {
+      this.setCurrentPanelCallback(panelAttrs.panelId);
+    } else {
+      this.container.set(panelAttrs.panelId, {
+        panelAttrs,
+        status: PanelStatus.Inactive,
+        sidebarItemRef: null,
+      });
+      if (panelAttrs.focus) {
+        this.setCurrentPanelCallback(panelAttrs.panelId);
+      }
     }
     this.forceUpdate();
   }
@@ -186,6 +194,7 @@ export class PanelManagerAction {
         key: panelId,
         name: panelId,
         element: p.panelAttrs.element,
+        keepAliveInBackground: p.panelAttrs.keepAliveInBackground,
       })
     );
   }

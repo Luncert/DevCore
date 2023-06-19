@@ -174,8 +174,8 @@ export default function LogSourceDetails({
                         );
                         const panelId = `LogStreamingView/LogStream/${logSourceId}`;
                         panelManager.createPanel(
-                          panelId,
                           {
+                            panelId,
                             iconName: 'iconConsole',
                             element: (
                               <LogStreamingView
@@ -183,9 +183,10 @@ export default function LogSourceDetails({
                                 logSourceId={logSourceId}
                               />
                             ),
-                            tips: 'Double-click to close'
+                            tips: 'Double-click to close',
+                            keepAliveInBackground: true,
+                            focus: true,
                           },
-                          true
                         );
                       }}
                     />
