@@ -14,6 +14,7 @@ import LogStreamingSearchBar from './LogStreamingSearchBar';
 import CustomTheme from './CustomTheme.json';
 import config from '../c/Config.json';
 import './LogStreamingView.scss';
+import { PanelManagerAction, PanelStatus, usePanelManager } from './PanelManager';
 
 interface LogStreamingViewProps {
   serviceName: string;
@@ -52,7 +53,11 @@ function clearBuffer() {
   clearDataBuffer();
 }
 
-function openStream(logSourceId: string, logTypeFilter: string) {
+function openStream(
+  logSourceId: string,
+  logTypeFilter: string,
+  panelManager: PanelManagerAction
+) {
   // this.term.clear()
   term.writeln(
     styledString('> connecting...', colors.streamOpened, colors.bg, Mod.Bold)
@@ -61,6 +66,8 @@ function openStream(logSourceId: string, logTypeFilter: string) {
   const streamConnection = new EventSource(
     `${config.loghub.endpoint}/log/stream?sourceId=${logSourceId}&type=${logTypeFilter}`
   );
+  const panelId = `LogStreamingView/LogStream/${logSourceId}`;
+
   streamConnection.onopen = () => {
     term.writeln(
       styledString(
@@ -74,11 +81,13 @@ function openStream(logSourceId: string, logTypeFilter: string) {
   streamConnection.onmessage = (evt) => {
     console.warn('received unexpected event', evt);
   };
+
   streamConnection.addEventListener('log streaming', (evt) => {
     const { data } = evt as any;
     const printLogType = logTypeFilter === 'ALL';
-    
+    panelManager.updatePanelStatus(panelId, PanelStatus.Active);
     processLog(data, (s: any) => term.write(s), printLogType);
+    panelManager.updatePanelStatus(panelId, PanelStatus.Inactive);
   });
   streamConnection.onerror = () => {
     term.writeln(
@@ -98,7 +107,11 @@ function openStream(logSourceId: string, logTypeFilter: string) {
   // FIXME: update disconnect button
 }
 
-function doLogging(logSourceId: string, logTypeFilter: string) {
+function doLogging(
+  logSourceId: string,
+  logTypeFilter: string,
+  panelManager: PanelManagerAction
+) {
   if (!logSourceId) {
     // this.notify('log source id cannot be empty')
     return;
@@ -113,7 +126,7 @@ function doLogging(logSourceId: string, logTypeFilter: string) {
     closeStream();
   }
 
-  openStream(logSourceId, logTypeFilter);
+  openStream(logSourceId, logTypeFilter, panelManager);
 }
 
 function registerKeyEventListener(
@@ -185,6 +198,8 @@ export default function LogStreamingView({
   term = new Xterm(handleLinkFunc);
   registerKeyEventListener(setShowSearchBar);
 
+  const panelManager = usePanelManager();
+
   useEffect(() => {
     // enable xterm
     term.attach(xtermContainer.current);
@@ -193,7 +208,7 @@ export default function LogStreamingView({
     monaco.editor.defineTheme('custom', CustomTheme as any);
 
     if (logSourceId) {
-      doLogging(logSourceId, logTypeFilter);
+      doLogging(logSourceId, logTypeFilter, panelManager);
     }
     // this.setState({loggingParams: {logSourceId: '3bd40027-0e59-4366-9980-8a395c62c2d2#0', serviceName: 'test'}})
 

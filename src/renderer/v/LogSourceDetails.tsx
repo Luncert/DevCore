@@ -175,22 +175,15 @@ export default function LogSourceDetails({
                         const panelId = `LogStreamingView/LogStream/${logSourceId}`;
                         panelManager.createPanel(
                           panelId,
-                          <SidebarItem
-                            key={panelId}
-                            name={panelId}
-                            iconName="iconConsole"
-                            bindPanel={panelId}
-                          />,
-                          <Panel
-                            key={panelId}
-                            name={panelId}
-                            element={
+                          {
+                            iconName: 'iconConsole',
+                            element: (
                               <LogStreamingView
                                 serviceName={app.name}
                                 logSourceId={logSourceId}
                               />
-                            }
-                          />,
+                            ),
+                          },
                           true
                         );
                       }}

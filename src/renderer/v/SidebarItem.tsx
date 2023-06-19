@@ -10,6 +10,7 @@ interface SidebarItemProps {
   iconName: string;
   bindPanel?: string;
   isDefault?: boolean;
+  highlight?: boolean;
   onClick?: () => void;
 }
 
@@ -18,6 +19,7 @@ export default function SidebarItem({
   iconName,
   bindPanel,
   isDefault,
+  highlight,
   onClick,
 }: React.PropsWithChildren<SidebarItemProps>) {
   const { activeItem, setActiveItem } = useContext(SidebarContext);
@@ -33,7 +35,11 @@ export default function SidebarItem({
 
   return (
     <div
-      className={names('sidebarItem', conditionalString(isActive, 'active'))}
+      className={names(
+        'sidebarItem',
+        conditionalString(isActive, 'active'),
+        conditionalString(highlight, 'highlight')
+      )}
     >
       <AnimatedElement
         className={names('sidebarItemIcon', 'iconfont', iconName)}

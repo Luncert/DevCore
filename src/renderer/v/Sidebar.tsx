@@ -11,7 +11,10 @@ export const SidebarContext = React.createContext({
   setActiveItem: (_: SetStateAction<string>) => {},
 });
 
-export default function Sidebar({ activeItem: activeItemProps = '', children }: React.PropsWithChildren<SidebarProps>) {
+export default function Sidebar({
+  activeItem: activeItemProps = '',
+  children,
+}: React.PropsWithChildren<SidebarProps>) {
   const panelManager = usePanelManager();
   const currentPanel = panelManager.getCurrentPanel();
   const [activeItem, setActiveItem] = useState(activeItemProps);
