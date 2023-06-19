@@ -17,6 +17,25 @@
     height: 44px;
     padding: 7px 7px 7px 10px;
     border-radius: 0px 10px 10px 0px;
+
+    .sidebarItemTips {
+      position: absolute;
+      left: 50px;
+      padding: 0px 5px;
+      line-height: 30px;
+      height: 30px;
+      color: white;
+      white-space: nowrap;
+      background-color: rgb(56, 56, 56);
+      border: 1px solid grey;
+    }
+
+    .sidebarItemIcon {
+      width: 30px;
+      height: 30px;
+      font-size: 30px;
+      line-height: 30px;
+    }
   }
 
   .sidebarItem.active {
@@ -24,14 +43,7 @@
   }
 
   .sidebarItem.highlight {
-    background-color: rgb(98, 179, 84);
-  }
-
-  .sidebarItemIcon {
-    width: 30px;
-    height: 30px;
-    font-size: 30px;
-    line-height: 30px;
+    background-color: rgb(102, 201, 84) !important;
   }
 
   .alignToBottom {

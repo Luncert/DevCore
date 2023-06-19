@@ -85,9 +85,10 @@ function openStream(
   streamConnection.addEventListener('log streaming', (evt) => {
     const { data } = evt as any;
     const printLogType = logTypeFilter === 'ALL';
-    panelManager.updatePanelStatus(panelId, PanelStatus.Active);
-    processLog(data, (s: any) => term.write(s), printLogType);
-    panelManager.updatePanelStatus(panelId, PanelStatus.Inactive);
+    processLog(data, (s: any) => {
+      term.write(s);
+      panelManager.highlightPanel(panelId, 100);
+    }, printLogType);
   });
   streamConnection.onerror = () => {
     term.writeln(
@@ -267,7 +268,7 @@ export default function LogStreamingView({
                 'iconfont',
                 'iconRocket'
               )}
-              onClick={() => doLogging(logSourceId, logTypeFilter)}
+              onClick={() => doLogging(logSourceId, logTypeFilter, panelManager)}
             />
           )}
           <button

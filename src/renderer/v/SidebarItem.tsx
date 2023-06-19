@@ -1,56 +1,61 @@
-import React, { useContext, useEffect } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { conditionalString, names } from 'renderer/c/utils';
 import AnimatedElement from './AnimatedElement';
-import './Sidebar.scss';
 import { usePanelManager } from './PanelManager';
-import { SidebarContext } from './Sidebar';
+import './Sidebar.scss';
 
 interface SidebarItemProps {
-  name: string;
   iconName: string;
-  bindPanel?: string;
+  bindPanel: string;
+  tips?: string;
   isDefault?: boolean;
-  highlight?: boolean;
-  onClick?: () => void;
+  refHook?: (ref: HTMLDivElement | null) => void;
 }
 
 export default function SidebarItem({
-  name,
   iconName,
   bindPanel,
-  isDefault,
-  highlight,
-  onClick,
+  tips,
+  refHook,
 }: React.PropsWithChildren<SidebarItemProps>) {
-  const { activeItem, setActiveItem } = useContext(SidebarContext);
+  const [displayTips, setDisplayTips] = useState(false);
+  const [tipsTimer, setTipsTimer] = useState(0);
   const panelManager = usePanelManager();
-  const isActive = activeItem === name;
+  const currentPanel = panelManager.getCurrentPanel();
+  const isActive = currentPanel === bindPanel;
+  const ref: React.RefObject<HTMLDivElement> = createRef();
 
   useEffect(() => {
-    if (!activeItem && isDefault) {
-      setActiveItem(name);
+    if (refHook) {
+      refHook(ref.current);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div
+      ref={ref}
       className={names(
         'sidebarItem',
         conditionalString(isActive, 'active'),
-        conditionalString(highlight, 'highlight')
       )}
+      onClick={() => {
+        panelManager.setCurrentPanel(bindPanel);
+      }}
+      onDoubleClick={() => {
+        panelManager.closePanel(bindPanel);
+      }}
+      onMouseEnter={() => setTipsTimer(setTimeout(() => setDisplayTips(true), 1000))}
+      onMouseLeave={() => {
+        if (tipsTimer) {
+          clearTimeout(tipsTimer);
+          setTipsTimer(0);
+        }
+        setDisplayTips(false)
+      }}
     >
+      {tips && displayTips && <span className="sidebarItemTips">{tips}</span>}
       <AnimatedElement
         className={names('sidebarItemIcon', 'iconfont', iconName)}
-        onClick={() => {
-          setActiveItem(name);
-          if (onClick) {
-            onClick();
-          } else if (bindPanel) {
-            panelManager.setCurrentPanel(bindPanel);
-          }
-        }}
         animation={{
           base: {
             color: 'rgb(95, 95, 95)',

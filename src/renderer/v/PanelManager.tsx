@@ -1,16 +1,19 @@
 import React, {
   SetStateAction,
   createContext,
+  createRef,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react';
 import SidebarItem from './SidebarItem';
+import { names } from 'renderer/c/utils';
 
 interface PanelAttributes {
   iconName: string;
   element: JSX.Element;
+  tips?: string;
 }
 
 export enum PanelStatus {
@@ -21,6 +24,8 @@ export enum PanelStatus {
 export interface RuntimePanel {
   panelAttrs: PanelAttributes;
   status: PanelStatus;
+  sidebarItemRef: HTMLDivElement | null;
+  timer?: NodeJS.Timeout;
 }
 
 interface PanelManagerContextDef {
@@ -85,7 +90,7 @@ export function Panel({ name, element, isDefault }: PanelProps) {
     if (!currentPanel && isDefault) {
       setCurrentPanel(name);
     }
-  }, [isDefault]);
+  }, [currentPanel, isDefault]);
 
   if (currentPanel === name) {
     return element;
@@ -113,10 +118,19 @@ export class PanelManagerAction {
     return this.currentPanel;
   }
 
+  closePanel(panelId: string) {
+    if (this.container.has(panelId)) {
+      this.container.delete(panelId);
+      this.setCurrentPanelCallback('');
+      this.forceUpdate();
+    }
+  }
+
   createPanel(panelId: string, panelAttrs: PanelAttributes, focus?: boolean) {
     this.container.set(panelId, {
       panelAttrs,
       status: PanelStatus.Inactive,
+      sidebarItemRef: null,
     });
     if (focus) {
       this.setCurrentPanelCallback(panelId);
@@ -124,10 +138,28 @@ export class PanelManagerAction {
     this.forceUpdate();
   }
 
+  highlightPanel(panelId: string, ttl: number) {
+    const panel = this.container.get(panelId);
+    if (panel) {
+      if (panel.timer) {
+        clearTimeout(panel.timer);
+      } else {
+        panel.status = PanelStatus.Active;
+        this.rerenderSidebarItemRef(panel);
+      }
+      panel.timer = setTimeout(() => {
+        panel.status = PanelStatus.Inactive;
+        this.rerenderSidebarItemRef(panel);
+        panel.timer = undefined;
+      }, ttl);
+    }
+  }
+
   updatePanelStatus(panelId: string, status: PanelStatus) {
     const panel = this.container.get(panelId);
     if (panel) {
       panel.status = status;
+      this.rerenderSidebarItemRef(panel);
       this.forceUpdate();
     }
   }
@@ -137,15 +169,15 @@ export class PanelManagerAction {
   }
 
   renderSidebar() {
-    return [...this.container.entries()].map(([panelId, p]) =>
-      React.createElement(SidebarItem, {
+    return [...this.container.entries()].map(([panelId, p]) => {
+      return React.createElement(SidebarItem, {
         iconName: p.panelAttrs.iconName,
         key: panelId,
-        name: panelId,
         bindPanel: panelId,
-        highlight: p.status === PanelStatus.Active,
+        tips: p.panelAttrs.tips,
+        refHook: (ref) => p.sidebarItemRef = ref,
       })
-    );
+    });
   }
 
   renderPanels() {
@@ -156,6 +188,18 @@ export class PanelManagerAction {
         element: p.panelAttrs.element,
       })
     );
+  }
+
+  private rerenderSidebarItemRef(panel: RuntimePanel) {
+    if (panel.sidebarItemRef) {
+      const n = new Set(panel.sidebarItemRef.className.split(' '))
+      if (panel.status === PanelStatus.Active) {
+        n.add('highlight');
+      } else {
+        n.delete('highlight');
+      }
+      panel.sidebarItemRef.className = [...n].join(' ');
+    }
   }
 
   private forceUpdate() {

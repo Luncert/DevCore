@@ -21,11 +21,10 @@ export default function App() {
       <PanelManager signature={signature} setSignature={setSignature}>
         <Sidebar>
           <SidebarItem
-            isDefault
             key="LogSourceView"
-            name="LogSourceView"
             iconName="iconConsole"
             bindPanel="LogSourceView"
+            tips="Log Source View"
           />
           <Divider />
           <RuntimeSidebarItems />

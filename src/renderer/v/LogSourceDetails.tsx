@@ -183,6 +183,7 @@ export default function LogSourceDetails({
                                 logSourceId={logSourceId}
                               />
                             ),
+                            tips: 'Double-click to close'
                           },
                           true
                         );
