@@ -70,6 +70,10 @@ button:hover {
   box-shadow: -5px 0px 5px -5px rgba(0, 0, 0, 0.5), 5px 0px 5px -5px rgba(0, 0, 0, 0.5);
 }
 
+.btnBase.disabled {
+  display: none;
+}
+
 li {
   list-style: none;
 }

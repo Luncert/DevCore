@@ -35,7 +35,9 @@ class LogStreamingContext {
   editor: monaco.editor.IStandaloneCodeEditor;
   conn: AliveConnection | undefined;
 
-  constructor(private panelManager: PanelManagerAction) {
+  constructor(
+    private panelManager: PanelManagerAction,
+    private connectionEventListener: (connected: boolean) => void) {
   }
 
   closeStream() {
@@ -43,11 +45,13 @@ class LogStreamingContext {
       return;
     }
 
-    // FIXME: update disconnect button
     this.conn?.streamConnection.close();
     this.conn = undefined;
 
-    console.log('closed stream')
+    // update disconnect button
+    this.connectionEventListener(false);
+
+    console.log('closed stream');
     this.term.writeln(
       styledString('> closed stream', colors.streamClosed, colors.bg, Mod.Bold)
     );
@@ -73,7 +77,8 @@ class LogStreamingContext {
     const panelId = `LogStreamingView/LogStream/${logSourceId}`;
 
     streamConnection.onopen = () => {
-      console.log('streaming started')
+      this.connectionEventListener(true);
+      console.log('streaming started');
       this.term.writeln(
         styledString(
           '> streaming started',
@@ -96,7 +101,7 @@ class LogStreamingContext {
       }, printLogType);
     });
     streamConnection.onerror = () => {
-      console.log('error occured, session terminated')
+      console.log('error occured, session terminated');
       this.term.writeln(
         styledString(
           '> error occured, session terminated',
@@ -111,7 +116,6 @@ class LogStreamingContext {
       logSourceId,
       streamConnection,
     };
-    // FIXME: update disconnect button
   }
 
   doLogging(
@@ -177,6 +181,7 @@ export default function LogStreamingView({
   serviceName,
   logSourceId,
 }: LogStreamingViewProps) {
+  const [connected, setConnected] = useState(false);
   const [logTypeFilter, setLogTypeFilter] = useState(LOGGING_FILTERS[0]);
   const [selectedLinkedData, setSelectedLinkedData] =
     useState<LinkedData | null>(null);
@@ -201,10 +206,10 @@ export default function LogStreamingView({
       }
     }
   }
-
+console.log(connected)
   const panelManager = usePanelManager();
   const ctx = React.useMemo(() => {
-    const context = new LogStreamingContext(panelManager);
+    const context = new LogStreamingContext(panelManager, setConnected);
     context.term = new Xterm(handleLinkFunc);
     context.registerKeyEventListener(setShowSearchBar);
     return context;
@@ -221,9 +226,9 @@ export default function LogStreamingView({
       ctx.doLogging(logSourceId, logTypeFilter);
     }
     // this.setState({loggingParams: {logSourceId: '3bd40027-0e59-4366-9980-8a395c62c2d2#0', serviceName: 'test'}})
-
-    processLog('{"type":0, "payload": "asdasdasd\\n"}', output => ctx.term.write(output), false)
+    // processLog('{"type":0, "payload": "asdasdasd\\n"}', output => ctx.term.write(output), false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => ctx.closeStream();
   }, []);
 
   useEffect(() => {
@@ -236,8 +241,7 @@ export default function LogStreamingView({
         readOnly: true,
       });
     }
-    return () => ctx.closeStream();
-  }, [logSourceId, monacoContainer, selectedLinkedData]);
+  }, [logSourceId, selectedLinkedData]);
 
   return (
     <div id="loggingPage">
@@ -291,7 +295,7 @@ export default function LogStreamingView({
               'btnBase',
               'iconfont',
               'iconDisconnect',
-              conditionalString(!ctx.conn, 'disabled')
+              conditionalString(!connected, 'disabled')
             )}
             onClick={() => ctx.closeStream()}
           />
