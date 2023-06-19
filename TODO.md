@@ -1,0 +1,3 @@
+- switch panel will refresh logs
+- close panel button
+- panel active

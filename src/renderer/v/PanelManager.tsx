@@ -3,53 +3,63 @@ import React, {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
 
+export enum PanelStatus {
+  Active,
+  Inactive,
+}
+
 export interface RuntimePanel {
   sidebarItem: JSX.Element;
   panel: JSX.Element;
+  status: PanelStatus;
 }
 
 interface PanelManagerContextDef {
-  activePanel: string;
-  runtimePanels: RuntimePanel[];
-  setActivePanel: (_: SetStateAction<string>) => void;
-  setRuntimePanels: (_: SetStateAction<RuntimePanel[]>) => void;
+  container: Map<string, RuntimePanel>;
+  currentPanel: string;
+  signature: string;
+  setCurrentPanel: (_: SetStateAction<string>) => void;
+  setSignature: (_: SetStateAction<string>) => void;
 }
 
 const defaultPanelManagerContext: PanelManagerContextDef = {
-  activePanel: '',
-  runtimePanels: [],
-  setActivePanel: (_: SetStateAction<string>) => {},
-  setRuntimePanels: (_: SetStateAction<RuntimePanel[]>) => {},
+  container:  new Map(),
+  currentPanel: '',
+  signature: '',
+  setCurrentPanel: () => {},
+  setSignature: () => {},
 };
 
 export const PanelManagerContext = createContext(defaultPanelManagerContext);
-
-interface RuntimePanelContainer {
-  runtimePanels: RuntimePanel[];
-  update: Dispatch<SetStateAction<RuntimePanel[]>>;
-}
+const RenderWrapContext = createContext(null);
 
 interface PanelManagerProps {
-  container: RuntimePanelContainer;
+  signature: string;
+  setSignature: (_: SetStateAction<string>) => void;
 }
 
 export default function PanelManager({
-  container,
+  signature,
+  setSignature,
   children,
 }: React.PropsWithChildren<PanelManagerProps>) {
-  const [activePanel, setActivePanel] = useState('');
+  const [container] = useState<Map<string, RuntimePanel>>(() => new Map());
+  const [currentPanel, setCurrentPanel] = useState('');
+
   const ctxValue = useMemo(() => {
     return {
-      activePanel,
-      runtimePanels: container.runtimePanels,
-      setActivePanel,
-      setRuntimePanels: container.update,
+      container,
+      currentPanel,
+      signature,
+      setCurrentPanel,
+      setSignature,
     };
-  }, [activePanel, container.runtimePanels, container.update]);
+  }, [currentPanel, signature]);
 
   return React.createElement(
     PanelManagerContext.Provider,
@@ -59,38 +69,82 @@ export default function PanelManager({
 }
 
 export function usePanelManager() {
-  const ctx = useContext(PanelManagerContext);
-
+  const { container, currentPanel, setCurrentPanel, signature, setSignature } = useContext(PanelManagerContext);
   return React.useMemo(() => {
     return {
-      setActivePanel: ctx.setActivePanel,
+      setCurrentPanel,
+      getCurrentPanel: () => currentPanel,
       createPanel: (
+        panelId: string,
         sidebarItem: JSX.Element,
         panel: JSX.Element,
-        active: boolean
+        focus?: boolean
       ) => {
-        ctx.setRuntimePanels([...ctx.runtimePanels, { sidebarItem, panel }]);
-        if (active) {
-          ctx.setActivePanel(panel.props.name);
+        container.set(panelId, {
+          sidebarItem,
+          panel,
+          status: PanelStatus.Inactive,
+        });
+        setSignature([...container.keys()].join(','));
+        if (focus) {
+          setCurrentPanel(panel.props.name);
         }
       },
-      renderRuntimePanels: () => {
-        return ctx.runtimePanels.map((p) => p.panel);
+      updatePanelStatus: (panelId: string, status: PanelStatus) => {
+        const panel = container.get(panelId);
+        if (panel) {
+          panel.status = status;
+        }
+      },
+      getPanelStatus: (panelId: string) => {
+        return container.get(panelId)?.status;
+      },
+      renderSidebar: () => {
+        return [...container.values()].map((p) => p.sidebarItem);
+      },
+      renderPanels: () => {
+        return [...container.values()].map((p) => p.panel);
       },
     };
-  }, [ctx]);
+  }, [currentPanel, signature]);
 }
 
 interface PanelProps {
   name: string;
   element: JSX.Element;
+  isDefault?: boolean;
 }
 
-export function Panel({ name, element }: PanelProps) {
-  const { activePanel } = useContext(PanelManagerContext);
-  if (activePanel === name) {
+export function Panel({ name, element, isDefault }: PanelProps) {
+  const { currentPanel, setCurrentPanel } = useContext(PanelManagerContext);
+
+  useEffect(() => {
+    if (!currentPanel && isDefault) {
+      setCurrentPanel(name);
+    }
+  }, [isDefault]);
+
+  if (currentPanel === name) {
     return element;
   }
 
   return React.createElement('div', { style: { visibility: false } });
+}
+
+export function RuntimeSidebarItems() {
+  const panelManager = usePanelManager();
+  return React.createElement(
+    RenderWrapContext.Provider,
+    { value: null },
+    panelManager.renderSidebar()
+  );
+}
+
+export function RuntimePanels() {
+  const panelManager = usePanelManager();
+  return React.createElement(
+    RenderWrapContext.Provider,
+    { value: null },
+    panelManager.renderPanels()
+  );
 }

@@ -5,17 +5,6 @@ import { styledString } from './xterm/Colors';
 
 const linkedData: Map<string, LinkedData> = new Map();
 
-interface Mark {
-  pos: number;
-  value: string;
-  isQuote?: boolean;
-}
-
-interface Pos {
-  start: number;
-  end: number;
-}
-
 function replaceDataWithLink(source: string) {
   const stack: Mark[] = [];
   const pairs: Pos[] = [];

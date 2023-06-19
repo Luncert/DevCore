@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useMemo } from 'react';
-import { names } from 'renderer/c/utils';
+import React, { useContext, useEffect } from 'react';
+import { conditionalString, names } from 'renderer/c/utils';
 import AnimatedElement from './AnimatedElement';
 import './Sidebar.scss';
 import { usePanelManager } from './PanelManager';
@@ -25,34 +25,37 @@ export default function SidebarItem({
   const isActive = activeItem === name;
 
   useEffect(() => {
-    if (isDefault) {
+    if (!activeItem && isDefault) {
       setActiveItem(name);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <AnimatedElement
-      className="item"
-      active={isActive}
-      onClick={() => {
-        setActiveItem(name);
-        if (onClick) {
-          onClick();
-        } else if (bindPanel) {
-          panelManager.setActivePanel(bindPanel);
-        }
-      }}
-      animation={{
-        base: { color: 'rgb(95, 95, 95)', backgroundColor: 'rgb(56, 56, 56)' },
-        active: {
-          color: 'rgb(255, 255, 255)',
-          backgroundColor: 'rgb(82, 82, 82)',
-        },
-        hover: { color: 'rgb(190, 190, 190)' },
-      }}
+    <div
+      className={names('sidebarItem', conditionalString(isActive, 'active'))}
     >
-      <i className={names('iconfont', iconName)} />
-    </AnimatedElement>
+      <AnimatedElement
+        className={names('sidebarItemIcon', 'iconfont', iconName)}
+        onClick={() => {
+          setActiveItem(name);
+          if (onClick) {
+            onClick();
+          } else if (bindPanel) {
+            panelManager.setCurrentPanel(bindPanel);
+          }
+        }}
+        animation={{
+          base: {
+            color: 'rgb(95, 95, 95)',
+          },
+          active: {
+            color: 'rgb(255, 255, 255)',
+          },
+          hover: { color: 'rgb(190, 190, 190)' },
+        }}
+        disable={isActive}
+      />
+    </div>
   );
 }

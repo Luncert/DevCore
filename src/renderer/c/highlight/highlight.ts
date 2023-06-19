@@ -6,6 +6,11 @@ import wasmBin from './onig.wasm';
 import logLang from './log.lang.xml';
 import logColor from './log.color.json';
 
+interface ScopeStyleDef {
+  scope: string;
+  style: TerminalStyle;
+}
+
 function loadColorSchema(colorDefs: ScopeStyleDef[]) {
   const schema: Map<string, TerminalStyle> = new Map();
   colorDefs.forEach((colorDef) => schema.set(colorDef.scope, colorDef.style));
@@ -47,11 +52,6 @@ const colorSchema: Map<string, TerminalStyle> = loadColorSchema(
 );
 
 const registry = getRegistry();
-
-interface ScopeStyleDef {
-  scope: string;
-  style: TerminalStyle;
-}
 
 function getStyle(scopeNames: string[]): TerminalStyle | null {
   // eslint-disable-next-line no-restricted-syntax

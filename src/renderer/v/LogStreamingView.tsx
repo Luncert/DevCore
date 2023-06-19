@@ -77,6 +77,7 @@ function openStream(logSourceId: string, logTypeFilter: string) {
   streamConnection.addEventListener('log streaming', (evt) => {
     const { data } = evt as any;
     const printLogType = logTypeFilter === 'ALL';
+    
     processLog(data, (s: any) => term.write(s), printLogType);
   });
   streamConnection.onerror = () => {
@@ -85,7 +86,7 @@ function openStream(logSourceId: string, logTypeFilter: string) {
         '> error occured, session terminated',
         colors.streamingError,
         colors.bg,
-        Mod.Bold | Mod.Italic
+        Mod.Bold | Mod.Italic,
       )
     );
   };
@@ -196,7 +197,7 @@ export default function LogStreamingView({
     }
     // this.setState({loggingParams: {logSourceId: '3bd40027-0e59-4366-9980-8a395c62c2d2#0', serviceName: 'test'}})
 
-    processLog('{"type":0, "payload": "asdasdasd"}', output => term.write(output), false)
+    processLog('{"type":0, "payload": "asdasdasd\\n"}', output => term.write(output), false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -172,12 +172,12 @@ export default function LogSourceDetails({
                           app.appId,
                           instance.instanceId
                         );
-                        const sidebarItemId = `SidebarItem/LogStream/${logSourceId}`;
                         const panelId = `LogStreamingView/LogStream/${logSourceId}`;
                         panelManager.createPanel(
+                          panelId,
                           <SidebarItem
-                            key={sidebarItemId}
-                            name={sidebarItemId}
+                            key={panelId}
+                            name={panelId}
                             iconName="iconConsole"
                             bindPanel={panelId}
                           />,

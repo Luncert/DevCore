@@ -3,16 +3,22 @@ import LogSourceView from './v/LogSourceView';
 import Sidebar from './v/Sidebar';
 import SidebarItem from './v/SidebarItem';
 import Divider from './v/Divider';
-import PanelManager, { Panel, RuntimePanel } from './v/PanelManager';
+import PanelManager, {
+  Panel,
+  RuntimePanel,
+  RuntimePanels,
+  RuntimeSidebarItems,
+  usePanelManager,
+} from './v/PanelManager';
 import './App.scss';
 import '../../assets/iconfont/iconfont.css';
 
 export default function App() {
-  const [runtimePanels, setRuntimePanels] = useState<RuntimePanel[]>([]);
+  const [signature, setSignature] = useState('');
 
   return (
     <div id="main">
-      <PanelManager container={{ runtimePanels, update: setRuntimePanels }}>
+      <PanelManager signature={signature} setSignature={setSignature}>
         <Sidebar>
           <SidebarItem
             isDefault
@@ -22,15 +28,16 @@ export default function App() {
             bindPanel="LogSourceView"
           />
           <Divider />
-          {runtimePanels.map((p) => p.sidebarItem)}
+          <RuntimeSidebarItems />
         </Sidebar>
         <div className="content">
           <Panel
+            isDefault
             key="LogSourceView"
             name="LogSourceView"
             element={<LogSourceView />}
           />
-          {runtimePanels.map((p) => p.panel)}
+          <RuntimePanels />
         </div>
       </PanelManager>
     </div>

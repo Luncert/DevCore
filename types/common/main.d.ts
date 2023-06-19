@@ -62,3 +62,41 @@ interface TerminalStyle {
   background?: string;
   fontStyle?: string;
 }
+
+interface AliveConnection {
+  logSourceId: string
+  streamConnection: EventSource
+}
+
+interface InputStream {
+}
+
+interface OutputStream {
+  write(s: string | Uint8Array): void;
+  writeln(s: string | Uint8Array): void;
+}
+
+interface Command {
+  getName(): string;
+  run(
+    args: string[],
+    input: InputStream,
+    output: OutputStream
+  ): Promise<number>;
+}
+
+interface Interactor {
+  init(input: InputStream, output: OutputStream): void;
+  execute(command: string): void;
+}
+
+interface Mark {
+  pos: number;
+  value: string;
+  isQuote?: boolean;
+}
+
+interface Pos {
+  start: number;
+  end: number;
+}

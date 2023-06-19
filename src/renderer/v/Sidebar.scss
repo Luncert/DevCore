@@ -6,8 +6,9 @@
   height: 100%;
   background-color: rgb(56, 56, 56);
   z-index: 1000;
+  border-right: 1px solid rgb(156, 154, 154);
 
-  .item {
+  .sidebarItem {
     position: relative;
     box-sizing: border-box;
     color: rgb(95, 95, 95);
@@ -18,7 +19,11 @@
     border-radius: 0px 10px 10px 0px;
   }
 
-  .item i {
+  .sidebarItem.active {
+    background-color: rgb(190, 190, 190);
+  }
+
+  .sidebarItemIcon {
     width: 30px;
     height: 30px;
     font-size: 30px;

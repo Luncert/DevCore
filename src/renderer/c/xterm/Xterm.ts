@@ -24,7 +24,7 @@ export default class Xterm {
       disableStdin: true,
       fontFamily: 'JetBrainsMono-Regular',
       convertEol: true, // support \n
-      rendererType: 'canvas', // FIXME:
+      rendererType: 'canvas',
       scrollback: 100000,
       // fontSize: 24,
       // fontWeight: '400',
