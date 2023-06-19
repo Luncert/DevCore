@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { SetStateAction, createRef, useEffect, useState } from 'react';
+import React, { SetStateAction, createRef, useEffect, useMemo, useState } from 'react';
 import Xterm from 'renderer/c/xterm/Xterm';
 import * as monaco from 'monaco-editor';
 import processLog, {
@@ -91,7 +91,6 @@ class LogStreamingContext {
     streamConnection.onmessage = (evt) => {
       console.warn('received unexpected event', evt);
     };
-
     streamConnection.addEventListener('log streaming', (evt) => {
       const { data } = evt as any;
       const printLogType = logTypeFilter === 'ALL';
@@ -188,7 +187,6 @@ export default function LogStreamingView({
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [notification, setNotification] = useState(undefined);
   const xtermContainer: React.RefObject<HTMLDivElement> = createRef();
-  const monacoContainer: React.RefObject<HTMLDivElement> = createRef();
 
   function handleLinkFunc(event: MouseEvent, uri: string): void {
     if (uri.startsWith('loghub')) {
@@ -206,7 +204,7 @@ export default function LogStreamingView({
       }
     }
   }
-console.log(connected)
+
   const panelManager = usePanelManager();
   const ctx = React.useMemo(() => {
     const context = new LogStreamingContext(panelManager, setConnected);
@@ -231,21 +229,12 @@ console.log(connected)
     return () => ctx.closeStream();
   }, []);
 
-  useEffect(() => {
-    if (selectedLinkedData) {
-      ctx.editor = monaco.editor.create(monacoContainer.current, {
-        value: selectedLinkedData.value,
-        language: selectedLinkedData.language,
-        theme: 'custom',
-        minimap: { enabled: false },
-        readOnly: true,
-      });
-    }
-  }, [logSourceId, selectedLinkedData]);
-
   return (
     <div id="loggingPage">
-      {/* { this.renderLinkedData() } */}
+      {selectedLinkedData && <LinkedData
+        linkedData={selectedLinkedData}
+        closeCallback={() => setSelectedLinkedData(null)}
+        />}
       <div className="loggingArea">
         <div className="optionBar">
           {serviceName && <span className="label">source</span>}
@@ -325,6 +314,46 @@ console.log(connected)
             <Toast.Body>{notification}</Toast.Body>
           </Toast>
         </div>
+      </div>
+    </div>
+  );
+}
+
+interface LinkedDataProps {
+  linkedData: LinkedData;
+  closeCallback: () => void;
+}
+
+function LinkedData({ linkedData, closeCallback }: LinkedDataProps) {
+  const monacoContainer: React.RefObject<HTMLDivElement> = createRef();
+
+  const [editor, setEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
+
+  useEffect(() => {
+    if (monacoContainer.current) {
+      setEditor(monaco.editor.create(monacoContainer.current, {
+        value: linkedData.value,
+        language: linkedData.language,
+        theme: 'custom',
+        minimap: { enabled: false },
+        readOnly: true,
+        wordWrap: 'on',
+      }));
+    }
+  }, []);
+
+  return (
+    <div className='linkedData'>
+      <div className='linkedDataWrapper'>
+        <div className='header'>
+          <span className='title'>Linked Data</span>
+          <button className='closeBtn btnBase iconfont iconClose'
+            onClick={() => {
+              editor?.dispose()
+              closeCallback();
+            }}></button>
+        </div>
+        <div ref={monacoContainer} className='innerWrapper'></div>
       </div>
     </div>
   );
