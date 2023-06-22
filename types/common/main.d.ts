@@ -100,3 +100,10 @@ interface Pos {
   start: number;
   end: number;
 }
+
+interface ShellOpt {
+  executable?: string;
+  args?: string[];
+  cols?: number;
+  rows?: number;
+}
