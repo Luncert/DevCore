@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { SetStateAction, createRef, useEffect, useMemo, useState } from 'react';
+import React, { SetStateAction, createRef, useEffect, useState } from 'react';
 import Xterm from 'renderer/c/xterm/Xterm';
 import * as monaco from 'monaco-editor';
 import processLog, {
@@ -15,6 +15,7 @@ import CustomTheme from './CustomTheme.json';
 import config from '../c/Config.json';
 import './LogStreamingView.scss';
 import { PanelManagerAction, usePanelManager } from './PanelManager';
+import LinkedDataView from './LinkedDataView';
 
 interface LogStreamingViewProps {
   serviceName: string;
@@ -231,7 +232,7 @@ export default function LogStreamingView({
 
   return (
     <div id="loggingPage">
-      {selectedLinkedData && <LinkedData
+      {selectedLinkedData && <LinkedDataView
         linkedData={selectedLinkedData}
         closeCallback={() => setSelectedLinkedData(null)}
         />}
@@ -314,46 +315,6 @@ export default function LogStreamingView({
             <Toast.Body>{notification}</Toast.Body>
           </Toast>
         </div>
-      </div>
-    </div>
-  );
-}
-
-interface LinkedDataProps {
-  linkedData: LinkedData;
-  closeCallback: () => void;
-}
-
-function LinkedData({ linkedData, closeCallback }: LinkedDataProps) {
-  const monacoContainer: React.RefObject<HTMLDivElement> = createRef();
-
-  const [editor, setEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
-
-  useEffect(() => {
-    if (monacoContainer.current) {
-      setEditor(monaco.editor.create(monacoContainer.current, {
-        value: linkedData.value,
-        language: linkedData.language,
-        theme: 'custom',
-        minimap: { enabled: false },
-        readOnly: true,
-        wordWrap: 'on',
-      }));
-    }
-  }, []);
-
-  return (
-    <div className='linkedData'>
-      <div className='linkedDataWrapper'>
-        <div className='header'>
-          <span className='title'>Linked Data</span>
-          <button className='closeBtn btnBase iconfont iconClose'
-            onClick={() => {
-              editor?.dispose()
-              closeCallback();
-            }}></button>
-        </div>
-        <div ref={monacoContainer} className='innerWrapper'></div>
       </div>
     </div>
   );

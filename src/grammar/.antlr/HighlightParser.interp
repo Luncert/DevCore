@@ -1,0 +1,40 @@
+token literal names:
+null
+'example'
+'('
+')'
+'{'
+'}'
+'['
+']'
+'='
+','
+';'
+':'
+'.'
+null
+null
+
+token symbolic names:
+null
+null
+L_PAREN
+R_PAREN
+L_CURLY
+R_CURLY
+L_BRACKET
+R_BRACKET
+ASSIGN
+COMMA
+SEMI
+COLON
+DOT
+WS
+TERMINATOR
+
+rule names:
+example
+
+
+atn:
+[3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 16, 7, 4, 2, 9, 2, 3, 2, 3, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 5, 2, 4, 3, 2, 2, 2, 4, 5, 7, 3, 2, 2, 5, 3, 3, 2, 2, 2, 2]

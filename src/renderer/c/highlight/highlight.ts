@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime';
-import { Registry, parseRawGrammar, INITIAL } from 'vscode-textmate';
+import { Registry, parseRawGrammar, INITIAL, IGrammar } from 'vscode-textmate';
 import { loadWASM, OnigScanner, OnigString } from 'vscode-oniguruma';
 import { styledString, getFontStyle } from '../xterm/Colors';
 import wasmBin from './onig.wasm';
@@ -63,11 +63,18 @@ function getStyle(scopeNames: string[]): TerminalStyle | null {
   return null;
 }
 
+let grammar: IGrammar | null;
+
 export default async function highlight(
   source: string,
   output: (s: string) => void
 ) {
-  const grammar = await registry.loadGrammar('text.log');
+  if (!grammar) {
+    grammar = await registry.loadGrammar('text.log');
+  }
+  if (!grammar) {
+    throw new Error('loading grammar failed')
+  }
   const buf = [];
 
   let ruleStack = INITIAL;

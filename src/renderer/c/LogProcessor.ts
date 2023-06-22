@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { js as beautify } from 'js-beautify';
 import highlight from './highlight/highlight';
 import { styledString } from './xterm/Colors';
+import { beautify } from './Beautify';
 
 const linkedData: Map<string, LinkedData> = new Map();
 
@@ -45,7 +45,7 @@ function replaceDataWithLink(source: string) {
       const dataId = uuidv4();
       linkedData.set(dataId, {
         language: 'json',
-        value: beautify(json, { indent_size: 2, space_in_empty_paren: true }),
+        value: beautify(json),
       });
 
       buf.push(source.substring(0, p.start));
