@@ -5,9 +5,35 @@ import { JSONParser } from 'grammar/JSONParser';
 import { ToStringLexer } from 'grammar/ToStringLexer';
 import { ToStringParser } from 'grammar/ToStringParser';
 
+const beautifierProviders = [
+  () => new JsonBeautifyContext(),
+  () => new ToStringBeautifyContext()
+]
+
 export function beautify(s: string) {
-  const ctx = new ToStringBeautifyContext();
-  return ctx.beautify(s);
+  for (const provider of beautifierProviders) {
+    try {
+      return provider().beautify(s);
+    } catch (err) {
+      // ignore
+      console.error(err)
+    }
+  }
+  console.warn('beautify failed')
+  return s;
+}
+
+function beautifyJson(s: string) {
+  return new JsonBeautifyContext().beautify(s);
+}
+
+function beautifyToString(s: string) {
+  return new ToStringBeautifyContext().beautify(s);
+}
+
+interface ParseResult {
+  tokens: Token[];
+  errorCount: number;
 }
 
 abstract class BeautifyContext {
@@ -23,7 +49,11 @@ abstract class BeautifyContext {
 
   public beautify(source: string): string {
     const charStream = CharStreams.fromString(source);
-    const tokens = this.parse(charStream);
+    const { tokens, errorCount } = this.parse(charStream);
+    if (errorCount > 10) {
+      throw new Error('parse error')
+    }
+
     const b: string[] = [];
     // printTokens(tokens)
     for (const token of tokens) {
@@ -43,7 +73,7 @@ abstract class BeautifyContext {
     return b.join('');
   }
 
-  protected abstract parse(charStream: CodePointCharStream): Token[];
+  protected abstract parse(charStream: CodePointCharStream): ParseResult;
 
   protected newline() {
     this.buf.push('\n');
@@ -86,11 +116,17 @@ class JsonBeautifyContext extends BeautifyContext {
       .addAction(() => this.appendToken().space(), 4)
   }
 
-  protected parse(charStream: CodePointCharStream): Token[] {
+  protected parse(charStream: CodePointCharStream): ParseResult {
+    let parseErrorCount = 0;
     const lexer = new JSONLexer(charStream);
     const tokenStream = new CommonTokenStream(lexer);
-    new JSONParser(tokenStream).json();
-    return tokenStream.getTokens();
+    const parser = new JSONParser(tokenStream);
+    lexer.removeErrorListeners();
+    lexer.addErrorListener({ syntaxError: () => parseErrorCount++ });
+    parser.json();
+    // printParseTree(parser.data(), parser.ruleNames);
+    console.log(parseErrorCount)
+    return { tokens: tokenStream.getTokens(), errorCount: parseErrorCount };
   }
 }
 
@@ -103,13 +139,17 @@ class ToStringBeautifyContext extends BeautifyContext {
       .addAction(() => this.space().appendToken().space(), 4)
   }
 
-  protected parse(charStream: CodePointCharStream): Token[] {
+  protected parse(charStream: CodePointCharStream): ParseResult {
+    let parseErrorCount = 0;
     const lexer = new ToStringLexer(charStream);
-    const tokenSream = new CommonTokenStream(lexer);
-    const parser = new ToStringParser(tokenSream);
+    const tokenStream = new CommonTokenStream(lexer);
+    const parser = new ToStringParser(tokenStream);
+    lexer.removeErrorListeners();
+    lexer.addErrorListener({ syntaxError: () => parseErrorCount++ });
     parser.data();
     // printParseTree(parser.data(), parser.ruleNames);
-    return tokenSream.getTokens();
+    console.log(parseErrorCount)
+    return { tokens: tokenStream.getTokens(), errorCount: parseErrorCount };
   }
 }
 

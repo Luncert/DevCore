@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import highlight from './highlight/highlight';
 import { styledString } from './xterm/Colors';
-import { beautify } from './Beautify';
 
 const linkedData: Map<string, LinkedData> = new Map();
 
@@ -39,13 +38,13 @@ function replaceDataWithLink(source: string) {
   let i = 0;
   // eslint-disable-next-line no-restricted-syntax
   for (const p of pairs) {
-    const json = source.substring(p.start, p.end);
+    const data = source.substring(p.start, p.end);
 
     try {
       const dataId = uuidv4();
       linkedData.set(dataId, {
         language: 'json',
-        value: beautify(json),
+        value: data,
       });
 
       buf.push(source.substring(0, p.start));

@@ -1,5 +1,6 @@
 import React, { createRef, useEffect, useState } from 'react';
 import * as monaco from 'monaco-editor';
+import { beautify } from 'renderer/c/Beautify';
 
 interface LinkedDataViewProps {
   linkedData: LinkedData;
@@ -14,7 +15,7 @@ export default function LinkedDataView({ linkedData, closeCallback }: LinkedData
   useEffect(() => {
     if (monacoContainer.current) {
       setEditor(monaco.editor.create(monacoContainer.current, {
-        value: linkedData.value,
+        value: beautify(linkedData.value),
         language: linkedData.language,
         theme: 'custom',
         minimap: { enabled: false },
