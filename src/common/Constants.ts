@@ -1,0 +1,5 @@
+
+export enum Channels {
+  Ping
+}
+

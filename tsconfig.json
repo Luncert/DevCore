@@ -15,7 +15,16 @@
     "allowJs": true,
     "outDir": ".erb/dll",
     "types": [ "node" ],
-    "typeRoots": [ "./types", "../node_modules/@types" ]
+    "typeRoots": [ "./types", "../node_modules/@types" ],
+    // "paths": {
+    //   "*": ["node_modules/*"],
+    //   "@assets/*": ["./assets/*"],
+    //   "@common/*": ["./src/common/*"],
+    //   "@main/*": ["./src/main/*"],
+    //   "@renderer/*": ["./src/renderer/*"],
+    //   "@src/*": ["./src/*"],
+    //   "@misc/*": ["./misc/*"],
+    // }
   },
   "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"]
 }
