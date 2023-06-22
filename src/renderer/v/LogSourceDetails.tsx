@@ -176,7 +176,7 @@ export default function LogSourceDetails({
                         panelManager.createPanel(
                           {
                             panelId,
-                            iconName: 'iconConsole',
+                            iconName: 'iconData',
                             element: (
                               <LogStreamingView
                                 serviceName={app.name}
