@@ -12,7 +12,8 @@ export default class Xterm {
 
   private searchAddon: SearchAddon;
 
-  constructor(linkHandler?: LinkHandler) {
+  constructor(linkHandler?: LinkHandler,
+    resizeListener?: (cols: number, rows: number) => void) {
     this.term = new Terminal({
       theme: {
         foreground: 'rgb(200, 200, 200)',
@@ -37,7 +38,9 @@ export default class Xterm {
     this.term.loadAddon(new WebLinksAddon(linkHandler));
     this.term.loadAddon(new XtermWebfont());
 
-    this.term.onResize((arg: any) => {});
+    if (resizeListener) {
+      this.term.onResize(({cols, rows}) => resizeListener(cols, rows));
+    }
   }
 
   public onKey(

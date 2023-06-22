@@ -1,4 +1,4 @@
-import shellManager from "main/c/Shell";
+import shellManager from "../c/Shell";
 import Channels from "../../common/Constants";
 import { v4 as uuidv4 } from 'uuid';
 import { BrowserWindow, ipcMain } from "electron";
