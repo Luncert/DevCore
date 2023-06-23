@@ -16,9 +16,6 @@ export class Shell {
       cwd: process.env.HOME,
       env: process.env
     })
-    ptyProc.onData((s: string) => {
-      // this.remote.emit(sid, data)
-    })
     this.ptyProc = ptyProc;
   }
 
