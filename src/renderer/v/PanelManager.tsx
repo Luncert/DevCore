@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import SidebarItem from './SidebarItem';
 import { conditionalString, names } from 'renderer/c/utils';
+import { v4 as uuidv4} from 'uuid';
 
 interface PanelAttributes {
   iconName: string;
@@ -18,7 +19,6 @@ interface PanelAttributes {
 }
 
 interface CreatePanelAttributes extends PanelAttributes {
-  panelId: string;
   focus?: boolean;
 }
 
@@ -130,20 +130,22 @@ export class PanelManagerAction {
     }
   }
 
-  createPanel(panelAttrs: CreatePanelAttributes) {
-    if (this.container.has(panelAttrs.panelId)) {
-      this.setCurrentPanelCallback(panelAttrs.panelId);
+  createPanel(panelAttrs: CreatePanelAttributes): string {
+    const panelId = uuidv4();
+    if (this.container.has(panelId)) {
+      this.setCurrentPanelCallback(panelId);
     } else {
-      this.container.set(panelAttrs.panelId, {
+      this.container.set(panelId, {
         panelAttrs,
         status: PanelStatus.Inactive,
         sidebarItemRef: null,
       });
       if (panelAttrs.focus) {
-        this.setCurrentPanelCallback(panelAttrs.panelId);
+        this.setCurrentPanelCallback(panelId);
       }
     }
     this.forceUpdate();
+    return panelId;
   }
 
   highlightPanel(panelId: string, ttl: number) {

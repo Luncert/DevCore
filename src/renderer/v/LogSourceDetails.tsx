@@ -172,10 +172,8 @@ export default function LogSourceDetails({
                           app.appId,
                           instance.instanceId
                         );
-                        const panelId = `LogStreamingView/LogStream/${logSourceId}`;
                         panelManager.createPanel(
                           {
-                            panelId,
                             iconName: 'iconData',
                             element: (
                               <LogStreamingView

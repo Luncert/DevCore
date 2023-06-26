@@ -1,2 +1,3 @@
 - notification
 - shotcuts
+- terminal ctrl-c

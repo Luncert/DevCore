@@ -13,6 +13,7 @@ import PanelManager, {
 import './App.scss';
 import '../../assets/iconfont/iconfont.css';
 import { TerminalView } from './v/TerminalView';
+import HomeView from './v/HomeView';
 
 export default function App() {
   const [signature, setSignature] = useState('');
@@ -22,16 +23,10 @@ export default function App() {
       <PanelManager signature={signature} setSignature={setSignature}>
         <Sidebar>
           <SidebarItem
-            key="TerminalView"
-            iconName="iconConsole1"
-            bindPanel="TerminalView"
-            tips="Terminal View"
-          />
-          <SidebarItem
-            key="LogSourceView"
-            iconName="iconData"
-            bindPanel="LogSourceView"
-            tips="Log Source View"
+            key="HomeView"
+            iconName="iconHome"
+            bindPanel="HomeView"
+            tips="Home"
           />
           <Divider />
           <RuntimeSidebarItems />
@@ -39,14 +34,9 @@ export default function App() {
         <div className="content">
           <Panel
             isDefault
-            key="TerminalView"
-            name="TerminalView"
-            element={<TerminalView />}
-          />
-          <Panel
-            key="LogSourceView"
-            name="LogSourceView"
-            element={<LogSourceView />}
+            key="HomeView"
+            name="HomeView"
+            element={<HomeView />}
           />
           <RuntimePanels />
         </div>
