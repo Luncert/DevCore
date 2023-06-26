@@ -19,6 +19,7 @@ interface PanelAttributes {
 }
 
 interface CreatePanelAttributes extends PanelAttributes {
+  panelId?: string;
   focus?: boolean;
 }
 
@@ -131,7 +132,7 @@ export class PanelManagerAction {
   }
 
   createPanel(panelAttrs: CreatePanelAttributes): string {
-    const panelId = uuidv4();
+    const panelId = panelAttrs.panelId ? panelAttrs.panelId : uuidv4();
     if (this.container.has(panelId)) {
       this.setCurrentPanelCallback(panelId);
     } else {

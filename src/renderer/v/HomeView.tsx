@@ -47,6 +47,7 @@ export default function HomeView() {
     <div className="HomeView">
       <Navigate icon='iconData' onClick={() => {
         panelManager.createPanel({
+            panelId: 'LogSourceView',
             iconName: 'iconData',
             element: (
               <LogSourceView />
