@@ -3,22 +3,17 @@ import React, { createRef, useEffect } from 'react';
 import { TerminalToolbar } from './TerminalToolbar';
 import './TerminalView.scss';
 import Xterm from 'renderer/c/xterm/Xterm';
-import ApiContext from 'renderer/api/Api';
 
 class TerminalContext {
-  term: Xterm;
-  sid: string;
+  constructor(readonly term: Xterm) {
+  }
 }
 
 export function TerminalView() {
   const xtermContainer: React.RefObject<HTMLDivElement> = createRef();
 
   const ctx = React.useMemo(() => {
-    const context = new TerminalContext();
-    context.term = new Xterm(undefined, (c, r) =>
-      ApiContext.resizeShell(context.sid, c, r));
-    context.sid = ApiContext.createShell((s) => context.term.write(s))
-    return context;
+    return new TerminalContext(new Xterm({ createShell: true }));
   }, []);
 
   useEffect(() => {
@@ -26,7 +21,6 @@ export function TerminalView() {
 
     return () => {
       ctx.term.dettach();
-      ApiContext.destroyShell(ctx.sid);
     };
   }, []);
 

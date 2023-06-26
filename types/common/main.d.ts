@@ -101,9 +101,13 @@ interface Pos {
   end: number;
 }
 
+type DataHandler = (data: Uint8Array | string) => void;
+
+type CloseListener = () => void;
+
 interface ShellOpt {
+  output: DataHandler;
   executable?: string;
   args?: string[];
-  cols?: number;
-  rows?: number;
+  onClose ? : CloseListener;
 }
