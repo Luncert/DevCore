@@ -88,6 +88,14 @@ const configuration: webpack.Configuration = {
           'file-loader',
         ],
       },
+      {
+        test: /\.(wasm)$/,
+        use: ['arraybuffer-loader'],
+      },
+      {
+        test: /\.(lang\.xml)$/,
+        use: ['raw-loader'],
+      },
     ],
   },
 
