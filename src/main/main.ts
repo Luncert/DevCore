@@ -15,6 +15,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { registerApi } from './api/apiHost';
+import process from 'process';
 
 class AppUpdater {
   constructor() {
