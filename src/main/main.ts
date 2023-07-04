@@ -37,6 +37,11 @@ const isDebug =
 
 if (isDebug) {
   require('electron-debug')();
+  console.log(`v.electron: ${process.versions.electron}`)
+  console.log(`v.modules: ${process.versions.modules}`)
+  console.log(`v.node: ${process.versions.node}`)
+  console.log(`v.v8: ${process.versions.v8}`)
+  console.log(`v.chrome: ${process.versions.chrome}`)
 }
 
 const installExtensions = async () => {
