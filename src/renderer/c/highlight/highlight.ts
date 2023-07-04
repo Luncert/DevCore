@@ -2,7 +2,7 @@ import 'regenerator-runtime/runtime';
 import { Registry, parseRawGrammar, INITIAL, IGrammar } from 'vscode-textmate';
 import { loadWASM, OnigScanner, OnigString } from 'vscode-oniguruma';
 import { styledString, getFontStyle } from '../xterm/Colors';
-import wasmBin from 'vscode-oniguruma/release/onig.wasm';
+// import wasmBin from 'vscode-oniguruma/release/main';
 import logLang from './log.lang.xml';
 import logColor from './log.color.json';
 
@@ -17,11 +17,14 @@ function loadColorSchema(colorDefs: ScopeStyleDef[]) {
   return schema;
 }
 
-const a: ArrayBuffer = wasmBin;
 // Create a registry that can create a grammar from a scope name.
 // https://github.com/textmate/javascript.tmbundle/blob/master/Syntaxes/JavaScript.plist
 function getRegistry() {
-  const vscodeOnigurumaLib = loadWASM(wasmBin).then(() => {
+  const vscodeOnigurumaLib = fetch(
+    "https://raw.githubusercontent.com/microsoft/vscode-oniguruma/main/out/onig.wasm"
+  ).then(res => res.arrayBuffer())
+  .then(buf => loadWASM(buf))
+  .then(() => {
     return {
       createOnigScanner(patterns: any) {
         return new OnigScanner(patterns);
