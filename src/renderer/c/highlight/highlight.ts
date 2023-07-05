@@ -33,6 +33,8 @@ function getRegistry() {
         return new OnigString(s);
       },
     };
+  }).catch((err) => {
+    console.error(err);
   });
   return new Registry({
     onigLib: vscodeOnigurumaLib,

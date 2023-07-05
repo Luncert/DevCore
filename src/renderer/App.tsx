@@ -1,18 +1,14 @@
 import { useState } from 'react';
-import LogSourceView from './v/LogSourceView';
 import Sidebar from './v/Sidebar';
 import SidebarItem from './v/SidebarItem';
 import Divider from './v/Divider';
 import PanelManager, {
   Panel,
-  RuntimePanel,
   RuntimePanels,
   RuntimeSidebarItems,
-  usePanelManager,
 } from './v/PanelManager';
 import './App.scss';
 import '../../assets/iconfont/iconfont.css';
-import { TerminalView } from './v/TerminalView';
 import HomeView from './v/HomeView';
 
 export default function App() {

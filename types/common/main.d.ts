@@ -107,7 +107,7 @@ type CloseListener = () => void;
 
 interface ShellOpt {
   output: DataHandler;
-  executable?: string;
-  args?: string[];
-  onClose ? : CloseListener;
+  cols?: number;
+  rows?: number;
+  onClose?: CloseListener;
 }

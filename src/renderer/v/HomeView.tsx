@@ -58,7 +58,7 @@ export default function HomeView() {
           },
         )
       }} />
-      <Navigate disabled icon='iconConsole1' onClick={() => {
+      <Navigate icon='iconConsole1' onClick={() => {
         panelManager.createPanel({
             iconName: 'iconConsole1',
             element: (

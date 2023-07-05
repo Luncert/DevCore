@@ -19,8 +19,13 @@ export function registerApi(mainWindow: BrowserWindow) {
     event.returnValue = { sid, streamChannel };
   });
 
-  ipcMain.on(Channels.Shell.Write, (event, sid, command) => {
-    shellManager.getShell(sid)?.process(command);
+
+  ipcMain.on(Channels.Shell.Resize, (event, sid, cols, rows) => {
+    shellManager.getShell(sid)?.resize(cols, rows);
+  });
+
+  ipcMain.on(Channels.Shell.Write, (event, sid, input) => {
+    shellManager.getShell(sid)?.write(input);
   })
 
   ipcMain.on(Channels.Shell.Destory, (event, sid) => {

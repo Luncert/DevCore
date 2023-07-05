@@ -11,6 +11,9 @@ const ApiContext = {
     cleaners.set(sid, cleaner);
     return sid;
   },
+  resizeShell(sid: string, cols: number, rows: number) {
+    ipc.sendMessage(Channels.Shell.Resize, sid, cols, rows);
+  },
   writeShell(sid: string, command: string) {
     ipc.sendMessage(Channels.Shell.Write, sid, command);
   },
