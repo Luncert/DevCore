@@ -103,11 +103,13 @@ interface Pos {
 
 type DataHandler = (data: Uint8Array | string) => void;
 
-type CloseListener = () => void;
+type Callback = () => void;
 
 interface ShellOpt {
-  output: DataHandler;
   cols?: number;
   rows?: number;
-  onClose?: CloseListener;
+  // has no effect in ipc
+  output?: DataHandler;
+  // has no effect in ipc
+  onClose?: Callback;
 }

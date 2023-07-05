@@ -6,7 +6,7 @@ import WebLinksAddon, { LinkHandler } from './WebLinksAddon';
 import 'xterm/css/xterm.css';
 import ApiContext from 'renderer/api/Api';
 
-type KeyListener = (key: string, domEvent: KeyboardEvent) => boolean;
+type KeyListener = (key: string, domEvent: KeyboardEvent) => void;
 
 interface XtermOpt {
   createShell?: boolean;
@@ -22,7 +22,10 @@ export default class Xterm {
 
   private shellId: string = '';
 
-  private keyListeners: KeyListener[] = [];
+  private internalKeyListener: KeyListener | undefined;
+  private keyListener: KeyListener | undefined;
+  private dataListener: Callback | undefined;
+  private closeListener: Callback | undefined;
 
   constructor(opt?: XtermOpt) {
     this.term = new Terminal({
@@ -49,31 +52,44 @@ export default class Xterm {
     this.term.loadAddon(new WebLinksAddon(opt?.linkHandler));
     this.term.loadAddon(new XtermWebfont());
     this.term.onKey(({key, domEvent}) => {
-      for (const listener of this.keyListeners) {
-        if (!listener(key, domEvent)) {
-          break;
-        }
-      }
-    })
+      this.internalKeyListener && this.internalKeyListener(key, domEvent);
+      this.keyListener && this.keyListener(key, domEvent);
+    });
+    this.term.onData(() => {
+      this.dataListener && this.dataListener();
+    });
 
     if (opt?.createShell) {
-      this.shellId = ApiContext.createShell((s) => {
-        this.write(s);
-      });
+      this.shellId = ApiContext.createShell(
+        (s) => this.write(s),
+        () => this.closeListener && this.closeListener()
+      );
 
       this.term.onResize(({cols, rows}) => ApiContext.resizeShell(this.shellId, cols, rows));
 
       if (opt?.createShell) {
-        this.keyListeners.push((k, e) => {
+        this.internalKeyListener = (k, e) => {
           ApiContext.writeShell(this.shellId, k);
-          return true;
-        })
+        };
       }
     }
   }
 
-  public onKey(listener: (key: string, domEvent: KeyboardEvent) => boolean) {
-    this.keyListeners.push(listener);
+  public on(event: 'key', listener: KeyListener): void;
+  public on(event: 'data', listener: Callback): void;
+  public on(event: 'close', listener: Callback): void;
+  public on(event: string, listener: any) {
+    switch (event) {
+      case 'key':
+        this.keyListener = listener;
+        break;
+      case 'data':
+        this.dataListener = listener;
+        break;
+      case 'close':
+        this.closeListener = listener;
+        break;
+    }
   }
 
   public attach(elem: HTMLElement) {

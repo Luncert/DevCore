@@ -11,6 +11,10 @@ import SidebarItem from './SidebarItem';
 import { conditionalString, names } from 'renderer/c/utils';
 import { v4 as uuidv4} from 'uuid';
 
+export interface PanelViewProps {
+  panelId: string;
+}
+
 interface PanelAttributes {
   iconName: string;
   element: JSX.Element;

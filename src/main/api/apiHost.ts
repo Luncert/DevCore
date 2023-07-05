@@ -13,12 +13,14 @@ export function registerApi(mainWindow: BrowserWindow) {
   ipcMain.on(Channels.Shell.Create, (event, opt) => {
     const streamChannel = uuidv4();
     const {sid, shell} = shellManager.create({...opt,
+      onClose: () => {
+        mainWindow.webContents.send(Channels.Shell.OnClose);
+      },
       output: (s) => {
         mainWindow.webContents.send(streamChannel, s);
       }});
     event.returnValue = { sid, streamChannel };
   });
-
 
   ipcMain.on(Channels.Shell.Resize, (event, sid, cols, rows) => {
     shellManager.getShell(sid)?.resize(cols, rows);

@@ -2,13 +2,15 @@ import Channels from "common/Constants";
 
 const ipc = window.electron.ipcRenderer;
 
-const cleaners: Map<string, () => void> = new Map();
+const cleanerMap: Map<string, Callback[]> = new Map();
 
 const ApiContext = {
-  createShell(onData: (s: string) => void, opt?: ShellOpt): string {
-    const { sid, streamChannel } = ipc.sendMessageSync(Channels.Shell.Create, [opt]);
-    const cleaner = ipc.on(streamChannel as string, (s) => onData(s as string))
-    cleaners.set(sid, cleaner);
+  createShell(onData: (s: string) => void, onClose?: Callback): string {
+    const { sid, streamChannel } = ipc.sendMessageSync(Channels.Shell.Create);
+    cleanerMap.set(sid, [
+      ipc.on(Channels.Shell.OnClose, () => onClose && onClose()),
+      ipc.on(streamChannel as string, (s) => onData(s as string))
+    ]);
     return sid;
   },
   resizeShell(sid: string, cols: number, rows: number) {
@@ -18,11 +20,13 @@ const ApiContext = {
     ipc.sendMessage(Channels.Shell.Write, sid, command);
   },
   destroyShell(sid: string) {
-    const cleaner = cleaners.get(sid);
-    if (cleaner) {
-      cleaner();
+    const cleaners = cleanerMap.get(sid);
+    if (cleaners) {
+      for (const cleaner of cleaners) {
+        cleaner();
+      }
     }
-    cleaners.delete(sid);
+    cleanerMap.delete(sid);
     ipc.sendMessage(Channels.Shell.Destory)
   }
 };

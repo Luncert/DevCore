@@ -5,7 +5,8 @@ const Channels = {
     Create: 'Create',
     Resize: 'Resize',
     Write: 'Write',
-    Destory: 'Destory'
+    Destory: 'Destory',
+    OnClose: 'OnClose',
   }
 }
 

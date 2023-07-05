@@ -4,6 +4,7 @@ import './HomeView.scss';
 import AnimatedElement from "./AnimatedElement";
 import { names } from "renderer/c/utils";
 import LogSourceView from "./LogSourceView";
+import { v4 as uuidv4} from 'uuid';
 
 interface NavigateProps {
   icon: string;
@@ -59,16 +60,17 @@ export default function HomeView() {
         )
       }} />
       <Navigate icon='iconConsole1' onClick={() => {
+        const panelId = uuidv4();
         panelManager.createPanel({
-            iconName: 'iconConsole1',
-            element: (
-              <TerminalView />
-            ),
-            tips: 'Double-click to close',
-            keepAliveInBackground: true,
-            focus: true,
-          },
-        )
+          panelId: panelId,
+          iconName: 'iconConsole1',
+          element: (
+            <TerminalView panelId={panelId} />
+          ),
+          tips: 'Double-click to close',
+          keepAliveInBackground: true,
+          focus: true,
+        })
       }} />
     </div>
   )
