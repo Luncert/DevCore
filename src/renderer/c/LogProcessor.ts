@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import highlight from './highlight/highlight';
 import { styledString } from './xterm/Colors';
+import { beautify } from './Beautify';
 
 const linkedData: Map<string, LinkedData> = new Map();
 
@@ -26,7 +27,7 @@ function replaceDataWithLink(source: string) {
         const m = stack[stack.length - 1];
         if (m.value.charCodeAt(0) + 2 === c.charCodeAt(0)) {
           const mi = stack.splice(-1)[0];
-          if (stack.length === 0 && i - mi.pos > 500) {
+          if (stack.length === 0) {
             pairs.push({ start: mi.pos, end: i + 1 });
           }
         }
@@ -38,17 +39,26 @@ function replaceDataWithLink(source: string) {
   let i = 0;
   // eslint-disable-next-line no-restricted-syntax
   for (const p of pairs) {
-    const data = source.substring(p.start, p.end);
+    let data = source.substring(p.start, p.end);
 
     try {
-      const dataId = uuidv4();
-      linkedData.set(dataId, {
-        language: 'json',
-        value: data,
-      });
-
-      buf.push(source.substring(0, p.start));
-      buf.push(`[ loghub://data/${dataId} ]`);
+      const size = p.end - p.start;
+      if (size < 100) {
+        continue;
+      }
+      if (i < p.start) {
+        buf.push(source.substring(i, p.start));
+      }
+      if (size < 500) {
+        buf.push(beautify(data));
+      } else {
+        const dataId = uuidv4();
+        linkedData.set(dataId, {
+          language: 'json',
+          value: data,
+        });
+        buf.push(`[ loghub://data/${dataId} ]`);
+      }
       i = p.end;
     } catch (e) {
       // ignored

@@ -1,4 +1,4 @@
-// Generated from /Users/I507145/Workspace/LKS/core/src/grammar/JSON.g4 by ANTLR 4.9.2
+// Generated from /Users/I507145/Workspace/LKS/DevCore/src/grammar/JSON.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

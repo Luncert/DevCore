@@ -25,7 +25,7 @@ obj
    ;
 
 objPair
-   : identifier '=' value?
+   : identifier ('=' | ':') value?
    ;
 
 identifier
@@ -38,11 +38,17 @@ value
    ;
 
 LITERAL_VALUE
-   : LITERAL (LITERAL | TIMEZONE)*
+   : STRING
+  //  | LITERAL (LITERAL | TIMEZONE)*
    ;
 
-fragment LITERAL
-   : ~ ('(' | ')' | ',' | '[' | ']' | '{' | '}' | '=')
+LITERAL
+   : ~ ('(' | ')' | ',' | '[' | ']' | '{' | '}' | '=' | ' ')
+   ;
+
+STRING
+   : '"' ~('"')* '"'
+   | '\'' ~('\'')* '\''
    ;
 
 fragment TIMEZONE

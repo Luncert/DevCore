@@ -208,7 +208,7 @@ export default function LogStreamingView({
   const panelManager = usePanelManager();
   const ctx = React.useMemo(() => {
     const context = new LogStreamingContext(panelManager, setConnected);
-    context.term = new Xterm(handleLinkFunc);
+    context.term = new Xterm({ linkHandler: handleLinkFunc });
     context.registerKeyEventListener(setShowSearchBar);
     return context;
   }, []);

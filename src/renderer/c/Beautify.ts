@@ -15,8 +15,7 @@ export function beautify(s: string) {
     try {
       return provider().beautify(s);
     } catch (err) {
-      // ignore
-      console.error(err)
+      // console.error(err)
     }
   }
   console.warn('beautify failed')
@@ -119,13 +118,14 @@ class JsonBeautifyContext extends BeautifyContext {
   protected parse(charStream: CodePointCharStream): ParseResult {
     let parseErrorCount = 0;
     const lexer = new JSONLexer(charStream);
+    lexer.removeErrorListeners();
     const tokenStream = new CommonTokenStream(lexer);
     const parser = new JSONParser(tokenStream);
-    lexer.removeErrorListeners();
     lexer.addErrorListener({ syntaxError: () => parseErrorCount++ });
+    parser.removeErrorListeners();
     parser.json();
     // printParseTree(parser.data(), parser.ruleNames);
-    console.log(parseErrorCount)
+    // console.log(parseErrorCount)
     return { tokens: tokenStream.getTokens(), errorCount: parseErrorCount };
   }
 }
@@ -142,13 +142,15 @@ class ToStringBeautifyContext extends BeautifyContext {
   protected parse(charStream: CodePointCharStream): ParseResult {
     let parseErrorCount = 0;
     const lexer = new ToStringLexer(charStream);
+    lexer.removeErrorListeners();
     const tokenStream = new CommonTokenStream(lexer);
     const parser = new ToStringParser(tokenStream);
-    lexer.removeErrorListeners();
     lexer.addErrorListener({ syntaxError: () => parseErrorCount++ });
+    parser.removeErrorListeners();
     parser.data();
+    // printTokens(tokenStream.getTokens())
     // printParseTree(parser.data(), parser.ruleNames);
-    console.log(parseErrorCount)
+    // console.log(parseErrorCount)
     return { tokens: tokenStream.getTokens(), errorCount: parseErrorCount };
   }
 }

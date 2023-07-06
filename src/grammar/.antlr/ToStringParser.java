@@ -1,4 +1,4 @@
-// Generated from /Users/I507145/Workspace/LKS/core/src/grammar/ToString.g4 by ANTLR 4.9.2
+// Generated from /Users/I507145/Workspace/LKS/DevCore/src/grammar/ToString.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -16,8 +16,8 @@ public class ToStringParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, LITERAL_VALUE=9, 
-		WS=10;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+		LITERAL_VALUE=10, LITERAL=11, STRING=12, WS=13;
 	public static final int
 		RULE_data = 0, RULE_map = 1, RULE_mapPair = 2, RULE_arr = 3, RULE_obj = 4, 
 		RULE_objPair = 5, RULE_identifier = 6, RULE_value = 7;
@@ -30,14 +30,14 @@ public class ToStringParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'{'", "','", "'}'", "'='", "'['", "']'", "'('", "')'"
+			null, "'{'", "','", "'}'", "'='", "'['", "']'", "'('", "')'", "':'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, "LITERAL_VALUE", 
-			"WS"
+			null, null, null, null, null, null, null, null, null, null, "LITERAL_VALUE", 
+			"LITERAL", "STRING", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -428,7 +428,15 @@ public class ToStringParser extends Parser {
 			setState(70);
 			identifier();
 			setState(71);
-			match(T__3);
+			_la = _input.LA(1);
+			if ( !(_la==T__3 || _la==T__8) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			setState(73);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -527,27 +535,27 @@ public class ToStringParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\fT\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\17T\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\3\2\5\2\26"+
 		"\n\2\3\3\3\3\3\3\3\3\7\3\34\n\3\f\3\16\3\37\13\3\3\3\3\3\3\3\3\3\5\3%"+
 		"\n\3\3\4\3\4\3\4\5\4*\n\4\3\5\3\5\3\5\3\5\7\5\60\n\5\f\5\16\5\63\13\5"+
 		"\3\5\3\5\3\5\3\5\5\59\n\5\3\6\3\6\3\6\3\6\3\6\7\6@\n\6\f\6\16\6C\13\6"+
 		"\5\6E\n\6\3\6\3\6\3\7\3\7\3\7\5\7L\n\7\3\b\3\b\3\t\3\t\5\tR\n\t\3\t\2"+
-		"\2\n\2\4\6\b\n\f\16\20\2\2\2V\2\25\3\2\2\2\4$\3\2\2\2\6&\3\2\2\2\b8\3"+
-		"\2\2\2\n:\3\2\2\2\fH\3\2\2\2\16M\3\2\2\2\20Q\3\2\2\2\22\26\5\4\3\2\23"+
-		"\26\5\b\5\2\24\26\5\n\6\2\25\22\3\2\2\2\25\23\3\2\2\2\25\24\3\2\2\2\26"+
-		"\3\3\2\2\2\27\30\7\3\2\2\30\35\5\6\4\2\31\32\7\4\2\2\32\34\5\6\4\2\33"+
-		"\31\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36 \3\2\2\2\37\35"+
-		"\3\2\2\2 !\7\5\2\2!%\3\2\2\2\"#\7\3\2\2#%\7\5\2\2$\27\3\2\2\2$\"\3\2\2"+
-		"\2%\5\3\2\2\2&\'\5\20\t\2\')\7\6\2\2(*\5\20\t\2)(\3\2\2\2)*\3\2\2\2*\7"+
-		"\3\2\2\2+,\7\7\2\2,\61\5\20\t\2-.\7\4\2\2.\60\5\20\t\2/-\3\2\2\2\60\63"+
-		"\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\64\3\2\2\2\63\61\3\2\2\2\64\65\7"+
-		"\b\2\2\659\3\2\2\2\66\67\7\7\2\2\679\7\b\2\28+\3\2\2\28\66\3\2\2\29\t"+
-		"\3\2\2\2:;\5\16\b\2;D\7\t\2\2<A\5\f\7\2=>\7\4\2\2>@\5\f\7\2?=\3\2\2\2"+
-		"@C\3\2\2\2A?\3\2\2\2AB\3\2\2\2BE\3\2\2\2CA\3\2\2\2D<\3\2\2\2DE\3\2\2\2"+
-		"EF\3\2\2\2FG\7\n\2\2G\13\3\2\2\2HI\5\16\b\2IK\7\6\2\2JL\5\20\t\2KJ\3\2"+
-		"\2\2KL\3\2\2\2L\r\3\2\2\2MN\7\13\2\2N\17\3\2\2\2OR\5\2\2\2PR\7\13\2\2"+
-		"QO\3\2\2\2QP\3\2\2\2R\21\3\2\2\2\f\25\35$)\618ADKQ";
+		"\2\n\2\4\6\b\n\f\16\20\2\3\4\2\6\6\13\13\2V\2\25\3\2\2\2\4$\3\2\2\2\6"+
+		"&\3\2\2\2\b8\3\2\2\2\n:\3\2\2\2\fH\3\2\2\2\16M\3\2\2\2\20Q\3\2\2\2\22"+
+		"\26\5\4\3\2\23\26\5\b\5\2\24\26\5\n\6\2\25\22\3\2\2\2\25\23\3\2\2\2\25"+
+		"\24\3\2\2\2\26\3\3\2\2\2\27\30\7\3\2\2\30\35\5\6\4\2\31\32\7\4\2\2\32"+
+		"\34\5\6\4\2\33\31\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36"+
+		" \3\2\2\2\37\35\3\2\2\2 !\7\5\2\2!%\3\2\2\2\"#\7\3\2\2#%\7\5\2\2$\27\3"+
+		"\2\2\2$\"\3\2\2\2%\5\3\2\2\2&\'\5\20\t\2\')\7\6\2\2(*\5\20\t\2)(\3\2\2"+
+		"\2)*\3\2\2\2*\7\3\2\2\2+,\7\7\2\2,\61\5\20\t\2-.\7\4\2\2.\60\5\20\t\2"+
+		"/-\3\2\2\2\60\63\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\64\3\2\2\2\63\61"+
+		"\3\2\2\2\64\65\7\b\2\2\659\3\2\2\2\66\67\7\7\2\2\679\7\b\2\28+\3\2\2\2"+
+		"8\66\3\2\2\29\t\3\2\2\2:;\5\16\b\2;D\7\t\2\2<A\5\f\7\2=>\7\4\2\2>@\5\f"+
+		"\7\2?=\3\2\2\2@C\3\2\2\2A?\3\2\2\2AB\3\2\2\2BE\3\2\2\2CA\3\2\2\2D<\3\2"+
+		"\2\2DE\3\2\2\2EF\3\2\2\2FG\7\n\2\2G\13\3\2\2\2HI\5\16\b\2IK\t\2\2\2JL"+
+		"\5\20\t\2KJ\3\2\2\2KL\3\2\2\2L\r\3\2\2\2MN\7\f\2\2N\17\3\2\2\2OR\5\2\2"+
+		"\2PR\7\f\2\2QO\3\2\2\2QP\3\2\2\2R\21\3\2\2\2\f\25\35$)\618ADKQ";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
