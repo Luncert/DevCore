@@ -137,18 +137,18 @@ export function TerminalView({ panelId }: PanelViewProps) {
 }`]);
 
   const ctx = React.useMemo(() => {
-    return new TerminalContext(null);
+    // return new TerminalContext(null);
     return new TerminalContext(new Xterm({ createShell: true }));
   }, []);
 
   const panelManager = usePanelManager();
   useEffect(() => {
-    // ctx.term.on('data', () => panelManager.highlightPanel(panelId, 100));
-    // ctx.term.on('close', () => panelManager.closePanel(panelId));
-    // ctx.term.attach(xtermContainer.current);
+    ctx.term.on('data', () => panelManager.highlightPanel(panelId, 100));
+    ctx.term.on('close', () => panelManager.closePanel(panelId));
+    ctx.term.attach(xtermContainer.current);
 
     return () => {
-      // ctx.term.dettach();
+      ctx.term.dettach();
     };
   }, []);
 

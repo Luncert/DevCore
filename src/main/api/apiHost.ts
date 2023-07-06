@@ -16,6 +16,9 @@ export function registerApi(mainWindow: BrowserWindow) {
       onClose: () => {
         mainWindow.webContents.send(Channels.Shell.OnClose);
       },
+      onProcessExit: (e) => {
+        mainWindow.webContents.send(Channels.Shell.OnProcessExit, e);
+      },
       output: (s) => {
         mainWindow.webContents.send(streamChannel, s);
       }});

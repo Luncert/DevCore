@@ -1,11 +1,11 @@
 import process from 'process';
 import os from 'os';
-const pty = require('node-pty') as any;
+import { spawn, IPty } from 'node-pty';
 
 export default class Shell {
 
-  private writeOutput: DataHandler
-  private proc: any;
+  private writeOutput: DataHandler;
+  private proc: IPty;
 
   constructor(opt: ShellOpt) {
     if (!opt.output) {
@@ -14,7 +14,7 @@ export default class Shell {
     this.writeOutput = opt.output
 
     const shell = process.env[process.platform === 'win32' ? 'COMSPEC' : 'SHELL'];
-    this.proc = pty.spawn(shell, [], {
+    this.proc = spawn(shell || '/bin/bash', [], {
       name: 'xterm-color',
       cols: opt.cols || 80,
       rows: opt.rows || 30,
@@ -22,8 +22,10 @@ export default class Shell {
       env: process.env
     });
 
-    this.proc.on('data', (data: any) => this.writeOutput(data));
-    this.proc.on('close', () => opt.onClose && opt.onClose());
+    this.proc.onData((data: any) => this.writeOutput(data));
+    if (opt.onClose) {
+      this.proc.onExit(() => opt.onClose());
+    }
 
     process.on('SIGINT', () => this.close());
   }
@@ -36,7 +38,7 @@ export default class Shell {
    * submit input to Terd to process
    * @param command string
    */
-  public write(command: Buffer | string) {
+  public write(command: string) {
     this.proc.write(command);
   }
 

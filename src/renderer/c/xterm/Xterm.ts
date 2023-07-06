@@ -26,6 +26,7 @@ export default class Xterm {
   private keyListener: KeyListener | undefined;
   private dataListener: Callback | undefined;
   private closeListener: Callback | undefined;
+  private onProcessExitListener: Consumer<ExitEvent> | undefined;
 
   constructor(opt?: XtermOpt) {
     this.term = new Terminal({
@@ -62,7 +63,8 @@ export default class Xterm {
     if (opt?.createShell) {
       this.shellId = ApiContext.createShell(
         (s) => this.write(s),
-        () => this.closeListener && this.closeListener()
+        () => this.closeListener && this.closeListener(),
+        this.onProcessExitListener,
       );
 
       this.term.onResize(({cols, rows}) => ApiContext.resizeShell(this.shellId, cols, rows));
@@ -77,6 +79,7 @@ export default class Xterm {
 
   public on(event: 'key', listener: KeyListener): void;
   public on(event: 'data', listener: Callback): void;
+  public on(event: 'onProcessExit', listener: Consumer<ExitEvent>): void;
   public on(event: 'close', listener: Callback): void;
   public on(event: string, listener: any) {
     switch (event) {
@@ -88,6 +91,9 @@ export default class Xterm {
         break;
       case 'close':
         this.closeListener = listener;
+        break;
+      case 'onProcessExit':
+        this.onProcessExitListener = listener;
         break;
     }
   }

@@ -1,3 +1,4 @@
+
 interface Instance {
   instanceId: string;
 }
@@ -113,5 +114,12 @@ interface ShellOpt {
   // has no effect in ipc
   output?: DataHandler;
   // has no effect in ipc
+  onProcessExit?: Consumer<ExitEvent>;
+  // has no effect in ipc
   onClose?: Callback;
+}
+
+interface ExitEvent {
+  exitCode: number;
+  signal?: number;
 }

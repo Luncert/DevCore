@@ -6,6 +6,7 @@ const Channels = {
     Resize: 'Resize',
     Write: 'Write',
     Destory: 'Destory',
+    OnProcessExit: 'OnProcessExit',
     OnClose: 'OnClose',
   }
 }

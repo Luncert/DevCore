@@ -5,9 +5,13 @@ const ipc = window.electron.ipcRenderer;
 const cleanerMap: Map<string, Callback[]> = new Map();
 
 const ApiContext = {
-  createShell(onData: (s: string) => void, onClose?: Callback): string {
+  createShell(
+    onData: (s: string) => void,
+    onClose?: Callback,
+    onProcessExit?: Consumer<ExitEvent>): string {
     const { sid, streamChannel } = ipc.sendMessageSync(Channels.Shell.Create);
     cleanerMap.set(sid, [
+      ipc.on(Channels.Shell.OnProcessExit, (e) => onProcessExit && onProcessExit(e as any)),
       ipc.on(Channels.Shell.OnClose, () => onClose && onClose()),
       ipc.on(streamChannel as string, (s) => onData(s as string))
     ]);
