@@ -142,10 +142,9 @@ class LogStreamingContext {
   registerKeyEventListener(
     setShowSearchBar: (_: SetStateAction<boolean>) => void
   ) {
-    this.term.onKey((arg) => {
-      const evt = arg.domEvent;
-      if (evt.ctrlKey) {
-        switch (evt.key) {
+    this.term.on('key', (key, domEvent) => {
+      if (domEvent.ctrlKey) {
+        switch (domEvent.key) {
           case 'c':
             document.execCommand('copy');
             break;
@@ -154,7 +153,7 @@ class LogStreamingContext {
             break;
           default:
         }
-      } else if (evt.key === 'Escape') {
+      } else if (domEvent.key === 'Escape') {
         setShowSearchBar(false);
       }
     });
