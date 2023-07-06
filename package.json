@@ -1,5 +1,5 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "description": "Developer Toolkits",
   "keywords": [
     "electron",
     "boilerplate",
@@ -193,8 +193,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "DevCore",
+    "appId": "org.luncert.devcore",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
