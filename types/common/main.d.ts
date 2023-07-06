@@ -105,6 +105,8 @@ type DataHandler = (data: Uint8Array | string) => void;
 
 type Callback = () => void;
 
+type Consumer<T> = (v: T) => void;
+
 interface ShellOpt {
   cols?: number;
   rows?: number;

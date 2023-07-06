@@ -7,9 +7,69 @@
   height: 100%;
 
   .xtermContainer {
-    width: calc(100% - 300px);
+    width: calc(100% - 500px);
     min-width: 500px;
     height: 100%;
     background-color: rgb(17, 21, 29);
+    box-shadow: 3px 0px 10px rgb(40, 40, 40);
+  }
+
+  .terminalToolbar {
+    position: relative;
+    width: 500px;
+    height: 100%;
+    overflow-y: auto;
+
+    .terminalMenus {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 30px;
+      background-color: rgb(79, 82, 90);
+    }
+
+    .terminalInputHistories {
+      border-top: 1px solid rgb(156, 154, 154);
+
+      .cardInner {
+        position: relative;
+
+        .cardControl {
+          position: absolute;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          width: 0px;
+          right: -5px;
+          bottom: 0px;
+          height: 100%;
+          overflow: hidden;
+          z-index: 1;
+
+          .closeBtn {
+            color: white;
+            background-color: rgb(175, 8, 8);
+            z-index: 100;
+          }
+
+          .closeBtn:hover {
+            background-color: rgb(226, 62, 50);
+          }
+
+          .closeBtn:active {
+            background-color: rgb(242, 112, 112);
+          }
+        }
+      }
+    }
+  }
+
+  .terminalToolbar::-webkit-scrollbar {
+    background-color: rgb(2, 18, 31);
+    width: 5px;
+  }
+
+  .terminalToolbar::-webkit-scrollbar-thumb {
+    background-color: rgb(89, 101, 134);
   }
 }

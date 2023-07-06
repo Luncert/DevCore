@@ -8,7 +8,6 @@ interface SidebarItemProps {
   iconName: string;
   bindPanel: string;
   tips?: string;
-  isDefault?: boolean;
   refHook?: (ref: HTMLDivElement | null) => void;
 }
 
