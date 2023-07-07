@@ -83,7 +83,6 @@ class RuntimePanelContainer {
       let next = (p.pos + 1) % this.panelArr.length;
 
       if (stopWhenEnd) {
-        console.log(next)
         // overflowd
         if (next == 0) {
           next = p.pos - 1;
