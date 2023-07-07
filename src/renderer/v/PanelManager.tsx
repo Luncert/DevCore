@@ -77,13 +77,25 @@ class RuntimePanelContainer {
     return this.panelMap.get(panelId);
   }
 
-  getNext(panelId: string): RuntimePanelInternal | string | undefined {
+  getNext(panelId: string, stopWhenEnd?: boolean): RuntimePanelInternal | string | undefined {
     const p = this.panelMap.get(panelId);
     if (p) {
-      const next = (p.pos + 1) % this.panelArr.length;
-      if (next == 0 && this.staticPanelInfo.length > 0) {
-        // return static panels
-        return this.staticPanelInfo[0];
+      let next = (p.pos + 1) % this.panelArr.length;
+
+      if (stopWhenEnd) {
+        console.log(next)
+        // overflowd
+        if (next == 0) {
+          next = p.pos - 1;
+          if (next < 0) {
+            return this.staticPanelInfo.length > 0 ? this.staticPanelInfo[this.staticPanelInfo.length - 1] : '';
+          }
+        }
+      } else {
+        if (next == 0 && this.staticPanelInfo.length > 0) {
+          // return static panels
+          return this.staticPanelInfo[0];
+        }
       }
 
       return this.panelArr[next];
@@ -235,8 +247,8 @@ export class PanelManagerAction {
     this.setCurrentPanelCallback(panelId);
   }
 
-  switchPanel() {
-    const panel = this.container.getNext(this.currentPanel);
+  switchPanel(stopWhenEnd?: boolean) {
+    const panel = this.container.getNext(this.currentPanel, stopWhenEnd);
     if (panel) {
       const panelId = (typeof(panel) === 'string') ? panel : panel.panelId;
       this.setCurrentPanel(panelId);
@@ -245,7 +257,7 @@ export class PanelManagerAction {
 
   closePanel(panelId: string) {
     if (this.container.has(panelId)) {
-      this.switchPanel();
+      this.switchPanel(true);
       this.container.remove(panelId);
       this.forceUpdate();
     }
@@ -355,8 +367,12 @@ export function usePanelManager() {
         setSignature
       );
 
-      acceleratorManager.on(Accelerators.SwitchTab, () => {
+      acceleratorManager.on(Accelerators.SwitchPanel, () => {
         action.switchPanel();
+      });
+
+      acceleratorManager.on(Accelerators.ClosePanel, () => {
+        action.closePanel(action.currentPanel);
       });
 
       return action;

@@ -4,7 +4,10 @@ class AcceleratorManager {
   private handlers = new Map<string, Callback>();
 
   handle(accelerator: string) {
-    this.handlers.forEach(c => c());
+    const handler = this.handlers.get(accelerator);
+    if (handler) {
+      handler();
+    }
   }
 
   on(accelerator: string, handler: Callback) {

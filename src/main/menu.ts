@@ -117,7 +117,8 @@ export default class MenuBuilder {
     const subMenuViewDev: MenuItemConstructorOptions = {
       label: 'View',
       submenu: [
-        this.menu('Switch Panel', Accelerators.SwitchTab),
+        this.menu('Switch Panel', Accelerators.SwitchPanel),
+        this.menu('Close Panel', Accelerators.ClosePanel),
         { type: 'separator' },
         {
           label: 'Reload',
@@ -162,7 +163,7 @@ export default class MenuBuilder {
           accelerator: 'Command+M',
           selector: 'performMiniaturize:',
         },
-        { label: 'Close', accelerator: 'Command+W', selector: 'performClose:' },
+        { label: 'Close', accelerator: 'Command+Shift+W', selector: 'performClose:' },
         { type: 'separator' },
         { label: 'Bring All to Front', selector: 'arrangeInFront:' },
       ],

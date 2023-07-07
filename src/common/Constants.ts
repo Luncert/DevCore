@@ -13,7 +13,8 @@ const Channels = {
 }
 
 const Accelerators = {
-  SwitchTab: 'Command+`'
+  SwitchPanel: 'Command+`',
+  ClosePanel: 'Command+W',
 }
 
 export { Channels, Accelerators };
