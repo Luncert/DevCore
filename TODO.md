@@ -5,5 +5,4 @@
 - change icon and app name
 - theme
 
-- tab switch sidebar
 - ctrl v to terminal

@@ -20,7 +20,7 @@ export default function SidebarItem({
   const [displayTips, setDisplayTips] = useState(false);
   const [tipsTimer, setTipsTimer] = useState(0);
   const panelManager = usePanelManager();
-  const currentPanel = panelManager.getCurrentPanel();
+  const currentPanel = panelManager.currentPanel;
   const isActive = currentPanel === bindPanel;
   const ref: React.RefObject<HTMLDivElement> = createRef();
 

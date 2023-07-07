@@ -4,7 +4,7 @@ import SidebarItem from './v/SidebarItem';
 import Divider from './v/Divider';
 import PanelManager, {
   Panel,
-  RuntimePanels,
+  Panels,
   RuntimeSidebarItems,
 } from './v/PanelManager';
 import './App.scss';
@@ -28,13 +28,14 @@ export default function App() {
           <RuntimeSidebarItems />
         </Sidebar>
         <div className="content">
-          <Panel
-            isDefault
-            key="HomeView"
-            name="HomeView"
-            element={<HomeView />}
-          />
-          <RuntimePanels />
+          <Panels>
+            <Panel
+              isDefault
+              key="HomeView"
+              name="HomeView"
+              element={<HomeView />}
+            />
+          </Panels>
         </div>
       </PanelManager>
     </div>

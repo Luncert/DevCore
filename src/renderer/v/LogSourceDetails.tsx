@@ -182,7 +182,6 @@ export default function LogSourceDetails({
                               />
                             ),
                             tips: 'Double-click to close',
-                            keepAliveInBackground: true,
                             focus: true,
                           },
                         );

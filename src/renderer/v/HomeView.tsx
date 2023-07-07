@@ -54,7 +54,6 @@ export default function HomeView() {
               <LogSourceView />
             ),
             tips: 'Double-click to close',
-            keepAliveInBackground: true,
             focus: true,
           },
         )
@@ -68,7 +67,6 @@ export default function HomeView() {
             <TerminalView panelId={panelId} />
           ),
           tips: 'Double-click to close',
-          keepAliveInBackground: true,
           focus: true,
         })
       }} />
