@@ -8,7 +8,12 @@ const Channels = {
     Destory: 'Destory',
     OnProcessExit: 'OnProcessExit',
     OnClose: 'OnClose',
-  }
+  },
+  OnKeyPressed: 'OnKeyPressed'
 }
 
-export default Channels;
+const Accelerators = {
+  SwitchTab: 'Command+`'
+}
+
+export { Channels, Accelerators };

@@ -10,6 +10,9 @@ import React, {
 import SidebarItem from './SidebarItem';
 import { conditionalString, names } from 'renderer/c/utils';
 import { v4 as uuidv4} from 'uuid';
+import acceleratorManager from '../c/AcceleratorManager';
+import { Accelerators } from 'common/Constants';
+import './PanelManager.scss';
 
 export interface PanelViewProps {
   panelId: string;
@@ -95,7 +98,7 @@ interface PanelProps {
   keepAliveInBackground?: boolean;
 }
 
-export function Panel({ name, element, isDefault, keepAliveInBackground }: PanelProps) {
+export function Panel({ name, element, isDefault, keepAliveInBackground = true }: PanelProps) {
   const { currentPanel, setCurrentPanel } = useContext(PanelManagerContext);
 
   useEffect(() => {
@@ -105,7 +108,7 @@ export function Panel({ name, element, isDefault, keepAliveInBackground }: Panel
   }, [currentPanel, isDefault]);
 
   const hidden = currentPanel !== name;
-  return React.createElement('div', { className: names('panel', conditionalString(hidden, 'hiddenPanel')) }, element);
+  return React.createElement('div', { className: names('panel', conditionalString(hidden, 'hiddenPanel'), conditionalString(hidden && !keepAliveInBackground, 'invisiable')) }, element);
 }
 
 export class PanelManagerAction {
@@ -234,13 +237,20 @@ export function usePanelManager() {
     useContext(PanelManagerContext);
 
   return React.useMemo(
-    () =>
-      new PanelManagerAction(
+    () => {
+      const action = new PanelManagerAction(
         container,
         currentPanel,
         setCurrentPanel,
         setSignature
-      ),
+      );
+
+      acceleratorManager.on(Accelerators.SwitchTab, () => {
+        console.log('1')
+      });
+
+      return action;
+    },
     [currentPanel, signature]
   );
 }

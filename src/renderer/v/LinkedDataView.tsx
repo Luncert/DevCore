@@ -1,6 +1,6 @@
 import React, { createRef, useEffect, useState } from 'react';
 import * as monaco from 'monaco-editor';
-import { beautify } from 'renderer/c/Beautify';
+import { beautify } from 'renderer/c/logstream/Beautify';
 
 interface LinkedDataViewProps {
   linkedData: LinkedData;

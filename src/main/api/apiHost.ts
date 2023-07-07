@@ -1,5 +1,5 @@
 import shellManager from "../c/ShellManager";
-import Channels from "../../common/Constants";
+import { Channels } from "../../common/Constants";
 import { v4 as uuidv4 } from 'uuid';
 import { BrowserWindow, ipcMain } from "electron";
 

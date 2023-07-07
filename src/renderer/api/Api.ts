@@ -1,4 +1,5 @@
-import Channels from "common/Constants";
+import { Channels } from "common/Constants";
+import acceleratorManager from "../c/AcceleratorManager";
 
 const ipc = window.electron.ipcRenderer;
 
@@ -34,5 +35,9 @@ const ApiContext = {
     ipc.sendMessage(Channels.Shell.Destory)
   }
 };
+
+ipc.on(Channels.OnKeyPressed, accelerator => {
+  acceleratorManager.handle(accelerator as string);
+});
 
 export default ApiContext;

@@ -6,13 +6,13 @@ import * as monaco from 'monaco-editor';
 import processLog, {
   clearDataBuffer,
   getLinkedData,
-} from 'renderer/c/LogProcessor';
+} from 'renderer/c/logstream/LogProcessor';
 import { conditionalString, names } from 'renderer/c/utils';
 import { Mod, styledString } from 'renderer/c/xterm/Colors';
 import { DropdownButton, Dropdown, Toast, ListGroup } from 'react-bootstrap';
 import LogStreamingSearchBar from './LogStreamingSearchBar';
 import CustomTheme from './CustomTheme.json';
-import config from '../c/Config.json';
+import config from '../api/Config.json';
 import './LogStreamingView.scss';
 import { PanelManagerAction, usePanelManager } from './PanelManager';
 import LinkedDataView from './LinkedDataView';

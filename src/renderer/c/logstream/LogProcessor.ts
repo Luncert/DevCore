@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import highlight from './highlight/highlight';
-import { styledString } from './xterm/Colors';
+import highlight from '../highlight/highlight';
+import { styledString } from '../xterm/Colors';
 import { beautify } from './Beautify';
 
 const linkedData: Map<string, LinkedData> = new Map();

@@ -4,7 +4,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useState } from 'react';
-import { useLoadDetails, useLoadIndex } from 'renderer/c/Axios';
+import { useLoadDetails, useLoadIndex } from 'renderer/api/Axios';
 import { conditionalString, names } from 'renderer/c/utils';
 import LogSourceDetails from './LogSourceDetails';
 import LogSourceSpaces from './LogSourceSpaces';
