@@ -1,8 +1,9 @@
 import process from 'process';
 import os from 'os';
 import { spawn, IPty } from 'node-pty';
+import Terd from '../lib/src/Terd';
 
-export default class Shell {
+export class Shell {
 
   private writeOutput: DataHandler;
   private proc: IPty;
@@ -24,7 +25,7 @@ export default class Shell {
 
     this.proc.onData((data: any) => this.writeOutput(data));
     if (opt.onClose) {
-      this.proc.onExit(() => opt.onClose());
+      this.proc.onExit(() => opt.onClose && opt.onClose());
     }
 
     process.on('SIGINT', () => this.close());
@@ -44,5 +45,18 @@ export default class Shell {
 
   public close() {
     this.proc.kill();
+  }
+}
+
+export default class TerdShell extends Terd {
+
+  constructor(opt: ShellOpt) {
+    super({ printBanner: true, printPrompt: true, disableExit: true });
+    this.on('data', data => opt.output && opt.output(data));
+    this.prompt();
+  }
+
+  write(input: string) {
+    this.processKey(Buffer.from(input));
   }
 }

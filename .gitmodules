@@ -1,0 +1,3 @@
+[submodule "src/main/lib"]
+	path = src/main/lib
+	url = https://github.com/Luncert/Terd
