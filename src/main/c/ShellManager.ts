@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
-import Shell from './Shell';
+import { PtyShell } from './Shell';
 
 class ShellManager {
 
-  private sessions: Map<string, Shell> = new Map();
+  private sessions: Map<string, PtyShell> = new Map();
 
   create(opt: ShellOpt) {
     const sid = uuidv4();
-    const shell = new Shell(opt);
+    const shell = new PtyShell(opt);
     this.sessions.set(sid, shell);
     return {sid, shell};
   }

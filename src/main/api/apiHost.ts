@@ -14,10 +14,10 @@ export function registerApi(mainWindow: BrowserWindow) {
     const streamChannel = uuidv4();
     const {sid, shell} = shellManager.create({...opt,
       onClose: () => {
-        mainWindow.webContents.send(Channels.Shell.OnClose);
+        mainWindow.webContents.send(Channels.Shell.OnClose(sid));
       },
       onProcessExit: (e) => {
-        mainWindow.webContents.send(Channels.Shell.OnProcessExit, e);
+        mainWindow.webContents.send(Channels.Shell.OnProcessExit(sid), e);
       },
       output: (s) => {
         mainWindow.webContents.send(streamChannel, s);

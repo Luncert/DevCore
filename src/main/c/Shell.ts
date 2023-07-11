@@ -3,7 +3,7 @@ import os from 'os';
 import { spawn, IPty } from 'node-pty';
 import Terd from './Terd/src/Terd';
 
-export class Shell {
+export class PtyShell {
 
   private writeOutput: DataHandler;
   private proc: IPty;
@@ -48,7 +48,7 @@ export class Shell {
   }
 }
 
-export default class TerdShell extends Terd {
+export class TerdShell extends Terd {
 
   constructor(opt: ShellOpt) {
     super({ printBanner: true, printPrompt: true, disableExit: true });

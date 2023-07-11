@@ -6,8 +6,8 @@ const Channels = {
     Resize: 'Resize',
     Write: 'Write',
     Destory: 'Destory',
-    OnProcessExit: 'OnProcessExit',
-    OnClose: 'OnClose',
+    OnProcessExit: (sid: string) => 'OnProcessExit/' + sid,
+    OnClose: (sid: string) => 'OnClose/' + sid,
   },
   OnKeyPressed: 'OnKeyPressed'
 }

@@ -12,8 +12,11 @@ const ApiContext = {
     onProcessExit?: Consumer<ExitEvent>): string {
     const { sid, streamChannel } = ipc.sendMessageSync(Channels.Shell.Create);
     cleanerMap.set(sid, [
-      ipc.on(Channels.Shell.OnProcessExit, (e) => onProcessExit && onProcessExit(e as any)),
-      ipc.on(Channels.Shell.OnClose, () => onClose && onClose()),
+      ipc.on(Channels.Shell.OnProcessExit(sid), (e) => {
+        ApiContext.destroyShell(sid);
+        onProcessExit && onProcessExit(e as any);
+      }),
+      ipc.on(Channels.Shell.OnClose(sid), () => onClose && onClose()),
       ipc.on(streamChannel as string, (s) => onData(s as string))
     ]);
     return sid;
