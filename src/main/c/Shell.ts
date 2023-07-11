@@ -1,7 +1,7 @@
 import process from 'process';
 import os from 'os';
 import { spawn, IPty } from 'node-pty';
-import Terd from '../lib/src/Terd';
+import Terd from './Terd/src/Terd';
 
 export class Shell {
 
@@ -12,7 +12,7 @@ export class Shell {
     if (!opt.output) {
       throw new Error('output cannot be null.');
     }
-    this.writeOutput = opt.output
+    this.writeOutput = opt.output;
 
     const shell = process.env[process.platform === 'win32' ? 'COMSPEC' : 'SHELL'];
     this.proc = spawn(shell || '/bin/bash', [], {

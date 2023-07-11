@@ -1,3 +1,3 @@
-[submodule "src/main/lib"]
-	path = src/main/lib
+[submodule "src/main/c/Terd"]
+	path = src/main/c/Terd
 	url = https://github.com/Luncert/Terd
