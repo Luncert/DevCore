@@ -70,6 +70,7 @@ export default function HomeView() {
           focus: true,
         })
       }} />
+      <Navigate icon='iconEditor' />
     </div>
   )
 }

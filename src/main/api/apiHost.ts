@@ -14,6 +14,9 @@ export function registerApi(mainWindow: BrowserWindow) {
     const streamChannel = uuidv4();
     const {sid, shell} = shellManager.create({...opt,
       onClose: () => {
+        if (mainWindow.isDestroyed()) {
+          return;
+        }
         mainWindow.webContents.send(Channels.Shell.OnClose(sid));
       },
       onProcessExit: (e) => {
