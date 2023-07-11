@@ -36,7 +36,7 @@ export function TerminalView({ panelId }: PanelViewProps) {
   return (
     <div className='TerminalView'>
       <div className='xtermContainer' ref={xtermContainer}></div>
-      <div className="terminalToolbar">
+      {/* <div className="terminalToolbar">
         <div className='terminalMenus'>
 
         </div>
@@ -49,7 +49,7 @@ export function TerminalView({ panelId }: PanelViewProps) {
               }} />
             </ListItem>)}
         </List>
-      </div>
+      </div> */}
     </div>
   )
 }
